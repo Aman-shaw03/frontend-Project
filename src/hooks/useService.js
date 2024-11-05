@@ -23,5 +23,5 @@ export const useService = (fun, dependency = []) => {
     },[...dependency])
 
     const refetch = () => fetchData()
-    return {data, isLoading, refetch}
+    return {data, isLoading, refetch, error}
 }
