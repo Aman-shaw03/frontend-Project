@@ -10,7 +10,7 @@ const initialState = {
     userData: {}
 }
 
-export const login = asyncThunkCreator("auth/login", async(data) => {
+export const login = createAsyncThunk("auth/login", async(data) => {
     try {
         const response = await axiosInstance.post("users/login", data)
         toast.success(response.data.message + " 🤩");
@@ -27,7 +27,7 @@ export const login = asyncThunkCreator("auth/login", async(data) => {
     }
 })
 
-export const logout = asyncThunkCreator("auth/logout", async() => {
+export const logout = createAsyncThunk("auth/logout", async() => {
     try {
         await axiosInstance.post("users/logout")
         toast.success("Logout Successfully")        
@@ -43,7 +43,7 @@ export const logout = asyncThunkCreator("auth/logout", async() => {
     }
 })
 
-export const getCurrentUser = asyncThunkCreator("auth/get-current-user", async() => {
+export const getCurrentUser = createAsyncThunk("auth/get-current-user", async() => {
     try {
         const response = await axiosInstance.get("users/current-user")
         console.log(response);
@@ -54,7 +54,7 @@ export const getCurrentUser = asyncThunkCreator("auth/get-current-user", async()
     }
 })
 
-export const changeCurrentPassword = asyncThunkCreator("auth/change-current-password", async(data) => {
+export const changeCurrentPassword = createAsyncThunk("auth/change-current-password", async(data) => {
     try {
         const response = await axiosInstance.patch("users/change-password", data, {
             headers:{
@@ -75,7 +75,7 @@ export const changeCurrentPassword = asyncThunkCreator("auth/change-current-pass
     }
 })
 
-export const updateProfile = asyncThunkCreator("auth/update-profile", async(data) => {
+export const updateProfile = createAsyncThunk("auth/update-profile", async(data) => {
     try {
         const response = await axiosInstance.patch("users/update-account", data, {
             headers:{
@@ -96,7 +96,7 @@ export const updateProfile = asyncThunkCreator("auth/update-profile", async(data
     }
 })
 
-export const uploadAvatar = asyncThunkCreator("user/upload-avatar", async({data}) => {
+export const uploadAvatar = createAsyncThunk("user/upload-avatar", async({data}) => {
     try {
         const response = await axiosInstance.patch("users/avatar", data, {
             headers:{
@@ -117,7 +117,7 @@ export const uploadAvatar = asyncThunkCreator("user/upload-avatar", async({data}
     }
 })
 
-export const uploadCoverImage = asyncThunkCreator("user/upload-cover-image", async({data}) => {
+export const uploadCoverImage = createAsyncThunk("user/upload-cover-image", async({data}) => {
     try {
         const response = await axiosInstance.patch("users/cover-image", data, {
             headers:{
