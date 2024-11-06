@@ -1,6 +1,6 @@
 export const parseErrorMessage = (responseHTMLString) => {
     const parser = new DOMParser()
-    const responseDocument = parser.parseFromString(responseHTMLString, "text/html")
+    const responseDocument = parser.parseFromString(responseHTMLString, "text/html") // this creates a DOM tree with a pre tag for error
     const errorMessageElement = responseDocument.querySelector("pre")
     //Searches the parsed HTML document for the first <pre> element. Often, error messages are displayed within <pre> tags in HTML responses.
 
