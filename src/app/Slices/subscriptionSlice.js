@@ -21,7 +21,7 @@ export const toggleSubscription = createAsyncThunk(
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
         } else {
-            toast.error("An error occurred during Getting channel stats. Please try again later.");
+            toast.error("An error occurred during toggle subscription. Please try again later.");
         }
         console.log(error);
         throw error;
@@ -41,7 +41,7 @@ export const toggleSubscription = createAsyncThunk(
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
         } else {
-            toast.error("An error occurred during Getting channel stats. Please try again later.");
+            toast.error("An error occurred during Getting channel subscribers. Please try again later.");
         }
         console.log(error);
         throw error;
@@ -61,7 +61,7 @@ export const toggleSubscription = createAsyncThunk(
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
         } else {
-            toast.error("An error occurred during Getting channel stats. Please try again later.");
+            toast.error("An error occurred during Getting Subscribed channels. Please try again later.");
         }
         console.log(error);
         throw error;
@@ -80,7 +80,7 @@ export const toggleSubscription = createAsyncThunk(
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
         } else {
-            toast.error("An error occurred during Getting channel stats. Please try again later.");
+            toast.error("An error occurred during Checking if the user is subscriber or not. Please try again later.");
         }
         console.log(error);
         throw error;
