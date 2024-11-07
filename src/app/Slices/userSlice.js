@@ -59,7 +59,7 @@ export const getAboutChannel = createAsyncThunk("user/getAboutChannel", async(us
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
         } else {
-            toast.error("An error occurred during getting Channel Profile. Please try again later.");
+            toast.error("An error occurred during getting About Channel. Please try again later.");
         }
         console.log(error);
         throw error;
