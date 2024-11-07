@@ -216,7 +216,7 @@ export const addVideoToPlaylist = createAsyncThunk(
         state.status = false;
       });
   
-      // add Video To Playlist
+      // add Video To Playlist, code for this slice action was commented out
       builder.addCase(addVideoToPlaylist.pending, (state) => {
         state.loading = true;
       });
@@ -230,7 +230,7 @@ export const addVideoToPlaylist = createAsyncThunk(
         state.status = false;
       });
   
-    //   remove Video From Playlist
+    //   remove Video From Playlist, code for this slice action was commented out
       builder.addCase(removeVideoFromPlaylist.pending, (state) => {
         state.loading = true;
       });
