@@ -19,10 +19,10 @@ export const store = configureStore({
         tweet: tweetSlice,
         subscription: subscriptionSlice,
         playlist: playlistSlice,
-        like: like,
+        like: likeSlice,
         comment: commentSlice,
         dashboard: dashboardSlice,
-        pagingVideos: pagingVideos,
+        pagingVideos: paginationSlice,
         darkMode: darkModeReducer,
     }
 })
