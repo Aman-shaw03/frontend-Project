@@ -37,7 +37,7 @@ function LoginPopup({route, message = "Login to Continue..."}, ref){
 
     const handleClose = ()=>{
         dialog.current?.close?.()
-        // in the dialog (where we set to store the ref) , access the current property close() in that 
+        // we are using <dialog> in return which is a html element for creating a popup , and close() is built in it to close the popup, {dont confuse it with close in useimperative handle}
         setShowPopup(false)
         if(route) navigate(route)
         // if in the loginpopup, we pass the route , then naviagate the user after closing the login popup 
