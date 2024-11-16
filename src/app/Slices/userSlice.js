@@ -85,30 +85,30 @@ const userSlice = createSlice({
             state.loading = false;
             state.status = false
         })
-    //get Channel Profile
-    builder.addCase(channelProfile.pending, (state) => {
-        state.loading = true;
-        state.status = false;
-        state.userData = null;
-      });
-      builder.addCase(channelProfile.fulfilled, (state, action) => {
-        state.loading = false;
-        state.status = true;
-        state.userData = action.payload;
-      });
-      builder.addCase(channelProfile.rejected, (state) => {
-        state.loading = false;
-        state.status = false;
-      });
-  
-      //get Channel Profile
-      builder.addCase(getAboutChannel.pending, (state) => {
-        state.loading = true;
-      });
-      builder.addCase(getAboutChannel.fulfilled, (state, action) => {
-        state.userData.about = action.payload;
-      });
-      builder.addCase(getAboutChannel.rejected, (state) => {});
+        //get Channel Profile
+        builder.addCase(channelProfile.pending, (state) => {
+            state.loading = true;
+            state.status = false;
+            state.userData = null;
+        });
+        builder.addCase(channelProfile.fulfilled, (state, action) => {
+            state.loading = false;
+            state.status = true;
+            state.userData = action.payload;
+        });
+        builder.addCase(channelProfile.rejected, (state) => {
+            state.loading = false;
+            state.status = false;
+        });
+    
+        //get Channel Profile
+        builder.addCase(getAboutChannel.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(getAboutChannel.fulfilled, (state, action) => {
+            state.userData.about = action.payload;
+        });
+        builder.addCase(getAboutChannel.rejected, (state) => {});
     }
 })
 

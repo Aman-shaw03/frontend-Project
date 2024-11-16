@@ -41,7 +41,7 @@ function VideoPlayer({
          posterLoad='eager'
          crossOrigin
          storage={`video-player-settings-${title}`}
-         onProviderChange={onProviderChange}
+         onProviderChange={onProviderChange} // its a promise that gives 2 things provider (real info about video/content), and nativeElement (additional info)
          duration={duration}
          streamType='unknown'
          poster={thumbnail}
