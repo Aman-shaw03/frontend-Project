@@ -41,7 +41,7 @@ export const addComment = createAsyncThunk("comment/addComment", async({videoId,
     }
 })
 
-export const updateContent = createAsyncThunk("comment/updateComment", async({commentId, content}) =>{
+export const updateComment = createAsyncThunk("comment/updateComment", async({commentId, content}) =>{
     try {
         const response = await axiosInstance.patch(`/comment/${commentId}`, {content})
         toast.success(response.data.message)
@@ -57,7 +57,7 @@ export const updateContent = createAsyncThunk("comment/updateComment", async({co
         throw error;        
     }
 })
-export const deleteContent = createAsyncThunk("comment/deleteComment", async(commentId) =>{
+export const deleteComment = createAsyncThunk("comment/deleteComment", async(commentId) =>{
     try {
         const response = await axiosInstance.delete(`/comment/${commentId}`)
         toast.success(response.data.message)
@@ -109,30 +109,30 @@ const commentSlice = createSlice({
             state.status = false
         })
         //updateContent
-        builder.addCase(updateContent.pending, (state) =>{
+        builder.addCase(updateComment.pending, (state) =>{
             state.loading = true,
             state.data = null
         })
-        builder.addCase(updateContent.fulfilled, (state, action) =>{
+        builder.addCase(updateComment.fulfilled, (state, action) =>{
             state.loading = false,
             // state.data = action.payload
             state.status = true
         })
-        builder.addCase(updateContent.rejected, (state) =>{
+        builder.addCase(updateComment.rejected, (state) =>{
             state.loading = false,
             state.status = false
         })
         //deleteContent
-        builder.addCase(deleteContent.pending, (state) =>{
+        builder.addCase(deleteComment.pending, (state) =>{
             state.loading = true,
             state.data = null
         })
-        builder.addCase(deleteContent.fulfilled, (state, action) =>{
+        builder.addCase(deleteComment.fulfilled, (state, action) =>{
             state.loading = false,
             // state.data = action.payload
             state.status = true
         })
-        builder.addCase(deleteContent.rejected, (state) =>{
+        builder.addCase(deleteComment.rejected, (state) =>{
             state.loading = false,
             state.status = false
         })
