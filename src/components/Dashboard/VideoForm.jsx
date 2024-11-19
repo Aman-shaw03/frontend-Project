@@ -50,7 +50,7 @@ function VideoForm({video=false}, ref) {
     console.log("data: ", data);
     let uploadPromise;
     if(video){
-      uploadPromise = dispatch(dispatch(updateVideo({videoId: video._id, dara})))
+      uploadPromise = dispatch(dispatch(updateVideo({videoId: video._id, data})))
     } else{
       uploadPromise = dispatch(publishVideo({data}))
     }
