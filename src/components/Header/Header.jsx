@@ -41,6 +41,11 @@ function Header() {
       icon: icons.history,
     },
     {
+      name: "Subscribers",
+      route: "feed/subscribers",
+      icon: icons.Subscribers,
+    },
+    {
       name: "Playlists",
       route: `/channel/${username}/playlists`,
       className: `${username ? "" : "hidden"}`,
@@ -51,11 +56,6 @@ function Header() {
       route: "/admin/dashboard",
       className: `${username ? "" : "hidden"}`,
       icon: icons.Admin,
-    },
-    {
-      name: "Subscribers",
-      route: "feed/subscribers",
-      icon: icons.Subscribers,
     },
     {
       name: "Support",
