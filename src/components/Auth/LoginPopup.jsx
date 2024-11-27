@@ -6,7 +6,7 @@ import {Logo,Input, Button} from "../index.js"
 import {Link, useNavigate} from "react-router-dom"
 import { useImperativeHandle } from "react";
 import {createPortal} from "react-dom"
-import { icons, Icons } from "../../assets/icons.jsx";
+import { icons } from "../../assets/icons.jsx";
 import { toast } from "react-toastify";
 
 function LoginPopup({route, message = "Login to Continue..."}, ref){

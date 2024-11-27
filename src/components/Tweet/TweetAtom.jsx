@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {Button, CommenLike, LikesComponent} from "../index"
+import {Button, CommentLike, LikesComponent} from "../index"
 import { formatTimeStamp } from '../../helpers/formatFigures'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'

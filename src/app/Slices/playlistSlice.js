@@ -43,7 +43,7 @@ export const getUserPlaylists = createAsyncThunk("playlist/getUserPlaylists", as
       }
 })
 
-export const getcurrentPlaylists = createAsyncThunk("playlist/getCurrentPlaylists", async(videoId)=>{
+export const getCurrentPlaylists = createAsyncThunk("playlist/getCurrentPlaylists", async(videoId)=>{
     try {
         const response = await axiosInstance.get(`/playlist/user/playlists/${videoId}`);
         console.log(response);

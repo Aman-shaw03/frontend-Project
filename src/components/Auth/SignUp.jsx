@@ -6,7 +6,7 @@ import { icons } from "../../assets/icons";
 import { useForm } from "react-hook-form";
 import {register as createAccount} from "../../app/Slices/userSlice.js"
 
-function Signup(){
+function SignUp(){
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const {
@@ -160,3 +160,4 @@ function Signup(){
         </div>
       );
 }
+export default SignUp

@@ -33,7 +33,7 @@ import VideoGrid from "./Video/VideoGrid";
 import MyChannelVideos from "./Channel/MyChannelVideos";
 import MyChannelSubscribed from "./Channel/MyChannelSubscribed";
 import MyChannelPlaylists from "./Channel/MyChannelPlaylists";
-import Input from "./Atoms/Input";
+import Input from "./Atoms/Input"
 import Button from "./Atoms/Button";
 import Comments from "./Comment/Comments";
 import LogoutBtn from "./Atoms/LogoutBtn";

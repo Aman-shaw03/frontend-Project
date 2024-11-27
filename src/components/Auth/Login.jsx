@@ -4,8 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {icons} from "../../assets/icons.jsx"
-import { login } from "../../app/Slices/authSlice.jsx";
-import { Logo, Input, Button} from "../index.jsx"
+import { login } from "../../app/Slices/authSlice.js";
+import { Logo, Input, Button} from "../index.js"
 
 function Login() {
     const dispatch = useDispatch()

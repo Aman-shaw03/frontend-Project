@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import MyChannelEmptyPlaylist from "../Playlist/MyChannelEmptyPlaylist"
 
-function MyChannelPlaylist() {
+function MyChannelPlaylists() {
     const [playlist , setPlaylist] = useState("")
     return !playlist ? (
         <MyChannelEmptyPlaylist />
@@ -141,4 +141,4 @@ function MyChannelPlaylist() {
       );
 }
 
-export default MyChannelPlaylist
+export default MyChannelPlaylists

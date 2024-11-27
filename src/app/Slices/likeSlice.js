@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {toast} from "react-toastify"
 import {axiosInstance} from "../../helpers/axios.helper"
-import {parseErrorMessage} from "../../helpers/formatFigures"
+import {parseErrorMessage} from "../../helpers/parseErrMsg.helper"
 
 const initialState = {
     loading: false,
@@ -134,3 +134,4 @@ const likeSlice = createSlice({
           });
     }
 })
+export default likeSlice.reducer;
