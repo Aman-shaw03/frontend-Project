@@ -8,7 +8,7 @@ import SignUp from "./Auth/SignUp";
 import Feed from "./Feed";
 import EmptyVideo from "./Video/EmptyVideo";
 import VideoList from "./Video/VideoList";
-import VideoDetail from "../pages/VideoDetail";
+import VideoDetail from "../pages/VideoDetails";
 import EmptyChannelVideo from "./Video/EmptyChannelVideo";
 import ChannelVideos from "./Video/ChannelVideos";
 import EmptyPlaylist from "./Playlist/EmptyPlaylist";
