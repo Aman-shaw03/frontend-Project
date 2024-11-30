@@ -9,7 +9,7 @@ const initialState = {
     data: null
 }
 
-export const toggleVideoLike = createAsyncThunk("like/toggleVideoLike", async(videoId)=>{
+export const toggleVideoLike = createAsyncThunk("like/toggleVideoLike", async (videoId) => {
     try {
         const response = await axiosInstance.patch(`/like/videos/${videoId}`)
         return response.data.data
@@ -46,7 +46,7 @@ export const toggleTweetLike = createAsyncThunk("like/toggleTweetLike", async(tw
         throw error
     }
 })
-export const getLikedVideos = createAsyncThunk("like/toggleVideoLike", async(videoId)=>{
+export const getLikedVideos = createAsyncThunk("like/getLikedVideos", async(videoId)=>{
     try {
         const response = await axiosInstance.post(`/like/videos/${videoId}`)
         return response.data.data
@@ -119,7 +119,7 @@ const likeSlice = createSlice({
             state.status = false;
           });
 
-        //toggleVideoLike
+          // toggle Video Like
         builder.addCase(toggleVideoLike.pending, (state) => {
             state.loading = true;
           });
@@ -132,6 +132,6 @@ const likeSlice = createSlice({
             state.loading = false;
             state.status = false;
           });
-    }
+          }
 })
 export default likeSlice.reducer;
