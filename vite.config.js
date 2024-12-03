@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server:{
     proxy:{
-      "/api": "http://localhost:9000/api/v1",
-      // now every api request that hit on /api will be redirect to this localhost 9000
+      "/api": "http://localhost:8000/api/v1",
+      // now every api request that hit on /api will be redirect to this localhost 8000
     }
   }
 })
