@@ -12,9 +12,9 @@ const initialState = {
 
 export const login = createAsyncThunk("auth/login", async(data) => {
     try {
-        const response = await axiosInstance.post("users/login", data)
+        const response = await axiosInstance.post("/users/login", data)
         toast.success(response.data.message + " 🤩");
-        return response.data            
+        return response.data.data.user            
     } catch (error) {
         if (error.response) {
             toast.error(error.response.data.message || parseErrorMessage(error.response.data));
@@ -29,7 +29,7 @@ export const login = createAsyncThunk("auth/login", async(data) => {
 
 export const logout = createAsyncThunk("auth/logout", async() => {
     try {
-        await axiosInstance.post("users/logout")
+        await axiosInstance.post("/users/logout")
         toast.success("Logout Successfully")        
     } catch (error) {
         if (error.response) {
@@ -43,26 +43,26 @@ export const logout = createAsyncThunk("auth/logout", async() => {
     }
 })
 
-export const getCurrentUser = createAsyncThunk("auth/get-current-user", async() => {
+export const getCurrentUser = createAsyncThunk("auth/getCurrentUser", async() => {
     try {
-        const response = await axiosInstance.get("users/current-user")
-        console.log(response);
-        return response.data        
+        const response = await axiosInstance.get("/users/get-current-user")
+        // console.log(response);
+        return response.data.data;      
     } catch (error) {
-        toast.error("BACKEND ERROR :: GET CURRENT USER")
+        console.error("BACKEND ERROR :: GET CURRENT USER")
         throw error;
     }
 })
 
-export const changeCurrentPassword = createAsyncThunk("auth/change-current-password", async(data) => {
+export const changeCurrentPassword = createAsyncThunk("auth/changeCurrentPassword", async(data) => {
     try {
-        const response = await axiosInstance.patch("users/change-password", data, {
+        const response = await axiosInstance.patch("/users/change-password", data, {
             headers:{
                 "Content-Type": "application/json"
             }
         })
         toast.success(response.data.message)
-        return response.data
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -75,15 +75,15 @@ export const changeCurrentPassword = createAsyncThunk("auth/change-current-passw
     }
 })
 
-export const updateProfile = createAsyncThunk("auth/update-profile", async(data) => {
+export const updateProfile = createAsyncThunk("auth/updateProfile", async(data) => {
     try {
-        const response = await axiosInstance.patch("users/update-account", data, {
+        const response = await axiosInstance.patch("/users/update-profile", data, {
             headers:{
                 "Content-Type": "application/json"
             }
         })
         toast.success(response.data.message)
-        return response.data
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -96,15 +96,15 @@ export const updateProfile = createAsyncThunk("auth/update-profile", async(data)
     }
 })
 
-export const uploadAvatar = createAsyncThunk("user/upload-avatar", async({data}) => {
+export const uploadAvatar = createAsyncThunk("user/uploadAvatar", async({data}) => {
     try {
-        const response = await axiosInstance.patch("users/avatar", data, {
+        const response = await axiosInstance.patch("/users/avatar", data, {
             headers:{
                 "Content-Type": "multipart/form-data"
             }
         })
         toast.success(response.data.message)
-        return response.data
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -117,15 +117,15 @@ export const uploadAvatar = createAsyncThunk("user/upload-avatar", async({data})
     }
 })
 
-export const uploadCoverImage = createAsyncThunk("user/upload-cover-image", async({data}) => {
+export const uploadCoverImage = createAsyncThunk("user/uploadCoverImage", async({data}) => {
     try {
-        const response = await axiosInstance.patch("users/cover-image", data, {
+        const response = await axiosInstance.patch("/users/cover-image", data, {
             headers:{
                 "Content-Type": "multipart/form-data"
             }
         })
         toast.success(response.data.message)
-        return response.data
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -140,9 +140,9 @@ export const uploadCoverImage = createAsyncThunk("user/upload-cover-image", asyn
 
 export const watchHistory = createAsyncThunk("user/history", async () => {
     try {
-      const response = await axiosInstance.get("users/history");
+      const response = await axiosInstance.get("/users/history");
       // toast.success(response.data.message);
-      return response.data
+      return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -157,7 +157,7 @@ export const watchHistory = createAsyncThunk("user/history", async () => {
   
 export const clearWatchHistory = createAsyncThunk("user/clearWatchHistory", async () => {
 try {
-        const response = await axiosInstance.delete("users/history");
+        const response = await axiosInstance.delete("/users/history");
         toast.success(response.data.message);
         return response.data
     } catch (error) {
@@ -174,8 +174,8 @@ try {
 
 export const userPlaylists = createAsyncThunk("user/userPlaylists", async(userid) => {
     try {
-        const response = await axiosInstance.get(`playlist/users/${userid}`)
-        return response.data
+        const response = await axiosInstance.get(`/playlist/users/${userid}`)
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -192,7 +192,7 @@ export const addLink = createAsyncThunk("user/addlink", async({formdata}) => {
     try {
         const response = await axiosInstance.post("/about/user/link/add", formdata)
         toast.success(response.data.message);
-        return response.data
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -208,7 +208,7 @@ export const updateLink = createAsyncThunk("user/updateLink", async({linkId, for
     try {
         const response = await axiosInstance.patch(`/about/user/link/${linkId}`, formdata)
         toast.success(response.data.message);
-        return response.data
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));
@@ -224,7 +224,7 @@ export const deleteLink = createAsyncThunk("user/deleteLink", async(linkId) => {
     try {
         const response = await axiosInstance.delete(`/about/user/link/${linkId}`)
         toast.success(response.data.message);
-        return response.data
+        return response.data.data
     } catch (error) {
         if (error.response) {
             toast.error(parseErrorMessage(error.response.data));

@@ -1,18 +1,18 @@
 export const parseErrorMessage = (responseHTMLString) => {
+  
+  const parser = new DOMParser();
+  const responseDocument = parser.parseFromString(responseHTMLString, "text/html");
+  const errorMessageElement = responseDocument.querySelector("pre");
 
-    const parser = new DOMParser();
-    const responseDocument = parser.parseFromString(responseHTMLString, "text/html");
-    const errorMessageElement = responseDocument.querySelector("pre");
-  
-    if (errorMessageElement) {
-      // Extract the error message using regex
-      const errorMessage = errorMessageElement.textContent.match(/^Error:\s*(.*?)(?=\s*at)/);
-      if (errorMessage && errorMessage[1]) {
-        return errorMessage[1].trim();
-      }
+  if (errorMessageElement) {
+    // Extract the error message using regex
+    const errorMessage = errorMessageElement.textContent.match(/^Error:\s*(.*?)(?=\s*at)/);
+    if (errorMessage && errorMessage[1]) {
+      return errorMessage[1].trim();
     }
-  
-    return "Something went wrong 😕";
+  }
+
+  return "Something went wrong 😕";
 };
 /*The regular expression matches a string that starts with "Error:", followed by any characters (non-greedy) 
 until the first occurrence of "at" (indicating a stack trace).
