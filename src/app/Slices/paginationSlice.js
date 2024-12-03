@@ -15,7 +15,7 @@ export const getAllVideosByOption = createAsyncThunk(
     try {
         const queryString = 
         "?"+ Object.entries(queryData)
-        .map(([key,value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}` )
+        .map(([key,value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
         .join("&")
         // here we used the querydata entries, extract them with map and set them like in  url using (encodeURIComponent which ensures the words we are putting in URL is safe and join them using &)
 
