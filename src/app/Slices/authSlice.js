@@ -77,7 +77,7 @@ export const changeCurrentPassword = createAsyncThunk("auth/changeCurrentPasswor
 
 export const updateProfile = createAsyncThunk("auth/updateProfile", async(data) => {
     try {
-        const response = await axiosInstance.patch("/users/update-profile", data, {
+        const response = await axiosInstance.patch("/users/update-account", data, {
             headers:{
                 "Content-Type": "application/json"
             }
