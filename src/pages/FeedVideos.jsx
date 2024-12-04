@@ -42,7 +42,7 @@ function FeedVideos({gridClassName, itemClassName}) {
 
         sectionRef.current?.addEventListener("scroll", handleScroll)
         return(()=>{
-            sectionRef.removeEventListener("scroll", handleScroll)
+            sectionRef.current?.removeEventListener("scroll", handleScroll)
             fetchedPageRef.current.clear()
             fetchAllVideosPromise.abort()
             dispatch(emptyPagingVideosData)

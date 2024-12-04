@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {Logo, Input, Button} from "../index.js"
-import { useNavigate, Link, matchPath } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { icons } from "../../assets/icons";
 import { useForm } from "react-hook-form";
 import {register as createAccount} from "../../app/Slices/userSlice.js"
@@ -96,7 +96,7 @@ function SignUp(){
                         {showPassword? icons.eye : icons.eyeOff}
                     </button>
                 </div>
-                {errors.password.type === "required" && (
+                {errors.password?.type === "required" && (
                     <span className="text-red-500 mt-1">*password is required</span>
                 )}
                 <Input
@@ -106,7 +106,7 @@ function SignUp(){
                  labelClassName="mt-4"
                  {...register("fullName", {required: true})}
                 />
-                {errors.fullName.type === "required" && (
+                {errors.fullName?.type === "required" && (
                     <span className="text-red-500 mt-1">*Full Name is required</span>
                 )}
                 <Input
@@ -124,10 +124,10 @@ function SignUp(){
                     }
                  })}
                 />
-                {errors.avatar.type === "required" && (
+                {errors.avatar?.type === "required" && (
                     <span className="text-red-500 mt-1">*Avatar is required</span>
                 )}
-                {errors.avatar.type === "validate" && (
+                {errors.avatar?.type === "validate" && (
                     <span className="text-red-500 mt-1">Only .png & .jpg & .jpeg files are accepted</span>
                 )}
                 
@@ -145,10 +145,10 @@ function SignUp(){
                     }
                  })}
                 />
-                {errors.coverImage.type === "required" && (
+                {errors.coverImage?.type === "required" && (
                     <span className="text-red-500 mt-1">*coverImage is required</span>
                 )}
-                {errors.coverImage.type === "validate" && (
+                {errors.coverImage?.type === "validate" && (
                     <span className="text-red-500 mt-1">Only .png & .jpg & .jpeg files are accepted</span>
                 )}
              
