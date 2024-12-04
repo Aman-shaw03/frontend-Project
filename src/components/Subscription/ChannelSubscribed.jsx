@@ -3,25 +3,21 @@ import {
   EmptySubscription, 
   MyChannelEmptySubscribed, 
   SubscriptionUser, 
-  UserProfile
 } from "../index"
 import { useDispatch, useSelector } from 'react-redux'
 import { getChannelSubscribers, getSubscribedChannels } from '../../app/Slices/subscriptionSlice'
-import { Link, useParams } from 'react-router-dom'
-import { formatSubscription } from '../../helpers/formatFigures'
+import { useParams } from 'react-router-dom'
 
 
-function ChannelSubscribed({
-  owner = false, 
-  isSubscribers = false
-}) {
+
+function ChannelSubscribed({ owner = false,  isSubscribers = false}){
 
   const dispatch = useDispatch()
-  const currentUser = useSelector((state)=> state.auth.userData )
-  const channelId = useSelector((state)=> state.user.userData?._id)
+  let {username} = useParams()
+  let currentUser = useSelector((state)=> state.auth.userData )
+  let channelId = useSelector((state)=> state.user.userData?._id)
   let { data, loading , status } = useSelector((state)=> state.subscription)
 
-  let {username} = useParams()
   const [subscribedFiltered, setSubscribedFiltered ] = useState(null)
 
   useEffect(()=> {
