@@ -16,13 +16,16 @@ export const login = createAsyncThunk("auth/login", async(data) => {
         toast.success(response.data.message + " 🤩");
         return response.data.data.user            
     } catch (error) {
-        if (error.response) {
-            toast.error(error.response.data.message || parseErrorMessage(error.response.data));
-        } else {
-            // Handle other types of errors (e.g., network errors)
-            toast.error("An error occurred during login. Please try again later.");
-        }
-        console.log(error); // Log the entire error object for debugging
+        // if (error.response) {
+        //     toast.error(error.response.data.message || parseErrorMessage(error.response.data));
+        // } else {
+        //     // Handle other types of errors (e.g., network errors)
+        //     toast.error("An error occurred during login. Please try again later.");
+        // }
+        // console.log(error); // Log the entire error object for debugging
+        // throw error;
+        toast.error(error.response.data.message || parseErrorMessage(error.response.data));
+        console.log(error);
         throw error;
     }
 })

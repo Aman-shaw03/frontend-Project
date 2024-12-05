@@ -28,18 +28,17 @@ function Login() {
         const isEmail = !data.username.startsWith("@")
         // we are keeping the username with "@" at start, for email, its normal
 
-        if(isEmail){
-            let isValidEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(data.username);
-
-            if(!isValidEmail){
-                toast.error("Please enter valid Email")
-                return
-            }
+        if (isEmail) {
+          let isValidEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(data.username);
+          if (!isValidEmail) {
+            toast.error("Please enter valid email id");
+            return;
+          }
         }
 
         const loginData = isEmail 
-        ? {email: data.username, password: data.pssword}
-        : {email: data.username.substr(1), password: data.password}
+        ? {email: data.username, password: data.password}
+        : {username: data.username.substr(1), password: data.password}
 
         // if its isEmail , so store it . if its not email but a username, store it also but from index[1], so we use substr[1] = start from index[1]
 
@@ -74,21 +73,21 @@ function Login() {
                 <span className="text-red-500 mt-1">*username or email is required</span>
                 )}
                 <div className="relative">
-                <Input
-                    label="Password"
-                    labelClassName="mt-5"
-                    type={showPassword ? "text" : "password"} // if showPassword is on , we will see as a open text , if not it will be wncrypted "*"
-                    required
-                    placeholder="Enter the Password"
-                    {...register("password", { required: true })}
-                />
-                <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute right-2 top-[80%] transform -translate-y-1/2 text-gray-500"
-                >
-                    {showPassword ? icons.eye : icons.eyeOff}
-                </button>
+                  <Input
+                      label="Password"
+                      labelClassName="mt-5"
+                      type={showPassword ? "text" : "password"} // if showPassword is on , we will see as a open text , if not it will be wncrypted "*"
+                      required
+                      placeholder="Enter the Password"
+                      {...register("password", { required: true })}
+                  />
+                  <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-2 top-[80%] transform -translate-y-1/2 text-gray-500"
+                  >
+                      {showPassword ? icons.eye : icons.eyeOff}
+                  </button>
                 </div>
                 {errors.password?.type === "required" && (
                 <span className="text-red-500 mt-1">*password is required</span>

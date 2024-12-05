@@ -21,6 +21,7 @@ function SignUp(){
     if(authStatus) navigate("/")
     if(!authStatus && userData) navigate("/login")
     // if user is not logged in but we have its data in user , send him to login 
+
     const handleSignUp = (data)=>{
         dispatch(createAccount(data))
     }
@@ -152,7 +153,7 @@ function SignUp(){
                     <span className="text-red-500 mt-1">Only .png & .jpg & .jpeg files are accepted</span>
                 )}
              
-              <Button type= "submit" diabled = {loading} className="mt-5 disabled:cursor-not-allowed bg-red-500 text-white rounded-full hover:bg-red-600 dark:hover:bg-[#ae7aff] dark:bg-[#883eff] ">
+              <Button type= "submit" disabled = {loading} className="mt-5 disabled:cursor-not-allowed bg-red-500 text-white rounded-full hover:bg-red-600 dark:hover:bg-[#ae7aff] dark:bg-[#883eff] ">
                 {loading ? <span>{icons.loading}</span> : "Sign Up"}
               </Button>
             </form>
