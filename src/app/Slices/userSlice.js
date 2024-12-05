@@ -20,8 +20,8 @@ export const register = createAsyncThunk("user/register", async(data)=>{
             formData.append("coverImage", data.coverImage[0])
         }
         const response = axiosInstance.post("/users/register", formData)
-        toast.success("Account Created successfully 🥳")
-        console.log(response.data);
+        toast.success("Account Created successfully 🥳") // yeh ho rha hai 
+        console.log(response.data); // yaha undefined show ho rha hai
         return (await response).data.data
     } catch (error) {
         if (error.response) {
@@ -29,7 +29,7 @@ export const register = createAsyncThunk("user/register", async(data)=>{
         } else {
             toast.error("An error occurred during Register. Please try again later.");
         }
-        console.log(error);
+        console.log(error); // fir yeh error
         throw error;
     }
 })

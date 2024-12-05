@@ -45,9 +45,10 @@ import LikedVideos from "./pages/LikedVideos.jsx"
 
  const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App />}>
-      <Route path='' element={<Home />} >
-        <Route path='' element={<Feed />}>
+    <Route path='/' element={<App />}> // login , signup , page notfound , Home 
+      <Route path='' element={<Home />} > //video watching , admin dashboard, feed
+        <Route path='' element={<Feed />}> //home page videos, home page tweets , playlist , other channels , own channels(playlist , tweets , about, subscribed , videos), search results , Feed history , feed liked videos, feed subscribers , settings , support   
+
           {/* Home Page Feed Videos */}
           <Route path='' element={<FeedVideos />} />
 
@@ -66,7 +67,7 @@ import LikedVideos from "./pages/LikedVideos.jsx"
 
 
           {/* All other channels */}
-          <Route path='user/:username' element={<Channel/>} >
+          <Route path='user/:username' element={<Channel />} >
 
            <Route path='' element={<ChannelVideos owner={false} />}/>
            <Route path='playlists' element={<ChannelPlaylist owner={false} />}/>
@@ -80,7 +81,7 @@ import LikedVideos from "./pages/LikedVideos.jsx"
           <Route 
            path='channel/:username'
            element={
-            <AuthLayout authentication guestComponent={GuestMyChannel}>
+            <AuthLayout authentication guestComponent={<GuestMyChannel />}>
               <Channel owner />
             </AuthLayout>
             } 
