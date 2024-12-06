@@ -12,7 +12,7 @@ export const parseErrorMessage = (responseHTMLString) => {
     }
   }
 
-  return "Something went wrong 😕";
+  return "Something went wrong 😕"; // yeh error ek 
 };
 /*The regular expression matches a string that starts with "Error:", followed by any characters (non-greedy) 
 until the first occurrence of "at" (indicating a stack trace).
