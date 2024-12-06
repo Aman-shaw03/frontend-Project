@@ -52,7 +52,7 @@ export const getCurrentUser = createAsyncThunk("auth/getCurrentUser", async() =>
         // console.log(response);
         return response.data.data;      
     } catch (error) {
-        console.error("BACKEND ERROR :: GET CURRENT USER")
+        console.error("BACKEND ERROR :: GET CURRENT USER", error)
         throw error;
     }
 })
