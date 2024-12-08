@@ -1,27 +1,24 @@
-import { useDispatch} from "react-redux"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
-export const useService = (fun, dependency = []) => {
-    const dispatch = useDispatch()
-    const [data, setData] = useState(null)
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(true)
+export function useService(fun, dependency = []) {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
 
-    const fetchData = () => {
-        dispatch(fun())
-        .then((res) => {
-            setData(res.payload)
-        })
-        .catch((error) => {
-            setError(error);
-        })
-        .finally(() => setIsLoading(false))
-    }
+  const fetchData = () => {
+    dispatch(fun())
+      .then((res) => {
+        setData(res.payload);
+      })
+      .finally(() => setIsLoading(false));
+  };
 
-    useEffect(() => {
-        fetchData()
-    },[...dependency])
+  useEffect(() => {
+    fetchData();
+  }, [...dependency]);
 
-    const refetch = () => fetchData()
-    return {data, isLoading, refetch, error}
+  const refetch = () => fetchData();
+
+  return { data, isLoading, refetch };
 }

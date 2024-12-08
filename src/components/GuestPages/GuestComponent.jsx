@@ -1,17 +1,16 @@
-import React, {useRef, useState} from 'react'
-import { icons } from '../../assets/icons'
-import {LoginPopup} from "../index"
+import React, { useRef, useState } from "react";
+import { icons } from "../../assets/icons";
+import { LoginPopup } from "../index";
 
 function GuestComponent({
   icon,
-  title = "Sign in to view this page" ,
+  title = "Sign in to view this page",
   subtitle = "",
   route,
   guest = true,
-
 }) {
-  const LoginPopuopDialog = useRef()
-  
+  const LoginPopupDialog = useRef();
+
   return (
     <section className="w-full bg-white dark:bg-black flex justify-center pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
       <div className="flex relative top-20 justify-center p-4">
@@ -42,4 +41,4 @@ function GuestComponent({
   );
 }
 
-export default GuestComponent
+export default GuestComponent;

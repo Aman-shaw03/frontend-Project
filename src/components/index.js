@@ -8,7 +8,7 @@ import SignUp from "./Auth/SignUp";
 import Feed from "./Feed";
 import EmptyVideo from "./Video/EmptyVideo";
 import VideoList from "./Video/VideoList";
-import VideoDetail from "../pages/VideoDetails";
+import VideoDetail from "../pages/VideoDetail";
 import EmptyChannelVideo from "./Video/EmptyChannelVideo";
 import ChannelVideos from "./Video/ChannelVideos";
 import EmptyPlaylist from "./Playlist/EmptyPlaylist";
@@ -33,7 +33,7 @@ import VideoGrid from "./Video/VideoGrid";
 import MyChannelVideos from "./Channel/MyChannelVideos";
 import MyChannelSubscribed from "./Channel/MyChannelSubscribed";
 import MyChannelPlaylists from "./Channel/MyChannelPlaylists";
-import Input from "./Atoms/Input"
+import Input from "./Atoms/Input";
 import Button from "./Atoms/Button";
 import Comments from "./Comment/Comments";
 import LogoutBtn from "./Atoms/LogoutBtn";

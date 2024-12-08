@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getAllVideos } from "../../app/Slices/videoSlice";
-import { formatTimeStamp, formatVideoDuration } from "../../helpers/formatFigures";
+import { formatTimestamp, formatVideoDuration } from "../../helpers/formatFigures";
 import { Link, useParams } from "react-router-dom";
 
 function ChannelVideos({ owner = false }) {
@@ -90,7 +90,7 @@ function ChannelVideos({ owner = false }) {
               <span className="ml-3">
                 <h6 className="mb-1 font-semibold">{video?.title}</h6>
                 <p className="flex text-sm text-black dark:dark:text-gray-200 ">
-                  {video?.views} Views · {formatTimeStamp(video?.createdAt)}
+                  {video?.views} Views · {formatTimestamp(video?.createdAt)}
                 </p>
               </span>
             </div>

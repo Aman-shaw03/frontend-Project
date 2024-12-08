@@ -1,93 +1,94 @@
-import React, {useEffect, useState} from 'react'
-import { useImperativeHandle, useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
-import { createPortal } from 'react-dom'
-import {publishVideo,updateVideo} from "../../app/Slices/videoSlice"
-import {UploadSuccess, UploadingVideo} from "../index"
+import React, { useEffect, useState } from "react";
+import { useImperativeHandle, useRef } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { publishVideo, updateVideo } from "../../app/Slices/videoSlice";
+import { UploadSuccess, UploadingVideo } from "../index";
 
-function VideoForm({video=false}, ref) {
-  const dialog = useRef()
-  const uploadingDialog = useRef()
-  const successDialog = useRef()
-  const dispatch = useDispatch()
+function VideoForm({ video = false }, ref) {
+  const dialog = useRef();
+  const uploadingDialog = useRef();
+  const successDialog = useRef();
+  const dispatch = useDispatch();
 
-  const [promise, setPromise] = useState(null)
-  const [showPopup, setShowPopup] = useState(false)
+  const [promise, setPromise] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const {
     register,
     handleSubmit,
     getValues,
-    formState: {errors}
+    formState: { errors },
   } = useForm({
-    defaultValues:{
+    defaultValues: {
       title: video?.title || "",
-      description: video?.description || ""
-    }
-  })
+      description: video?.description || "",
+    },
+  });
 
-  useImperativeHandle(ref, ()=> {
+  useImperativeHandle(ref, () => {
     return {
-      open(){
-        setShowPopup(true)
-        dialog.current?.showModal()
+      open() {
+        setShowPopup(true);
+        dialog.current?.showModal();
       },
-      clsoe(){
-        dialog.current?.close()
-      }
-    }
-  })
+      close() {
+        dialog.current?.close();
+      },
+    };
+  });
 
-  useEffect(()=> {
-    if(showPopup){
-      dialog.current?.showModal()
+  useEffect(() => {
+    if (showPopup) {
+      dialog.current.showModal();
     }
-  }),[showPopup]
-
+  }, [showPopup]);
 
   async function handleVideo(data) {
+    // OPTIMIZEME do not submit if details are not modified
     console.log("data: ", data);
-    let uploadPromise;
-    if(video){
-      uploadPromise = dispatch(dispatch(updateVideo({videoId: video._id, data})))
-    } else{
-      uploadPromise = dispatch(publishVideo({data}))
-    }
 
-    uploadPromise.then((res)=> {
-      if(res.meta.requestStatus === "fulfilled"){
-        uploadingDialog.current.close()
-        successDialog.current.open()
-      }else if(res.meta.requestStatus === "rejected"){
-        uploadingDialog.current.close()
+    let uploadPromise;
+    if (video) {
+      uploadPromise = dispatch(updateVideo({ videoId: video._id, data }));
+    } else {
+      uploadPromise = dispatch(publishVideo({ data }));
+    }
+    uploadPromise.then((res) => {
+      if (res.meta.requestStatus == "fulfilled") {
+        uploadingDialog.current.close();
+        successDialog.current.open();
+      } else if (res.meta.requestStatus == "rejected") {
+        uploadingDialog.current.close();
       }
-    })
+    });
 
     setPromise(uploadPromise);
     dialog.current?.close();
     uploadingDialog.current?.open();
   }
 
-
-  const handleAbort = ()=> promise.abort()
+  const handleAbort = () => promise.abort();
 
   return (
     <div>
-      {showPopup && createPortal(
-        <dialog ref={dialog} className="h-fit backdrop:backdrop-blur-lg lg:w-[40%] md:w-2/3 rounded ">
-          <UploadingVideo
-           ref={uploadingDialog}
-           abort={handleAbort}
-           video={video || getValues()}
-           updating={video ? true : false} />
-          <UploadSuccess
-           ref={successDialog}
-           video={video || getValues()}
-           updating={video ? true : false} />
-          
-          <div className=" dark:bg-black/85 p-2 sm:p-2 dark:text-white bg-[#fff8f8] text-black rounded ">
-          <form onSubmit={handleSubmit(handleVideo)} className="h-fit border  bg-white dark:bg-[#121212] rounded ">
+      {showPopup &&
+        createPortal(
+          <dialog ref={dialog} className="h-fit backdrop:backdrop-blur-lg lg:w-[40%] md:w-2/3 rounded ">
+            <UploadingVideo
+              ref={uploadingDialog}
+              abort={handleAbort}
+              video={video || getValues()}
+              updating={video ? true : false}
+            />
+            <UploadSuccess
+              ref={successDialog}
+              video={video || getValues()}
+              updating={video ? true : false}
+            />
+            <div className=" dark:bg-black/85 p-2 sm:p-2 dark:text-white bg-[#fff8f8] text-black rounded ">
+              <form onSubmit={handleSubmit(handleVideo)} className="h-fit border  bg-white dark:bg-[#121212] rounded ">
                 {/* Close Buttons */}
                 <div className="flex items-center justify-between border-b px-2 py-1 md:p-3">
                   <h2 className="text-xl font-semibold">{video ? "Update" : "Upload"} Video</h2>
@@ -248,12 +249,12 @@ function VideoForm({video=false}, ref) {
                   </div>
                 </div>
               </form>
-          </div>
-        </dialog>,
-        document.getElementById("popup-models")
-      )}
+            </div>
+          </dialog>,
+          document.getElementById("popup-models")
+        )}
     </div>
   );
 }
 
-export default VideoForm
+export default React.forwardRef(VideoForm);

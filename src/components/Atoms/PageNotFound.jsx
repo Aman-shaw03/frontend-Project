@@ -1,5 +1,5 @@
 import React from "react";
-import not_found from "../../assets/not_found.gif"
+import not_found from "../../assets/not_found.gif";
 import { Link } from "react-router-dom";
 import { Button } from "../index";
 function PageNotFound() {

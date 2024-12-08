@@ -1,30 +1,29 @@
-import React, {useRef} from 'react'
-import {Logo, LogoutBtn} from '../index'
-import { Link, useNavigate, NavLink } from 'react-router-dom'
+import React, { useRef } from "react";
+import { Logo, LogoutBtn } from "../index";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { icons } from '../../assets/icons';
-import some from "../../assets/some.png"
-import {DarkModeToggleForSmall} from "../Atoms/Darkmode"
+import { icons } from "../../assets/icons";
+import some from '../../assets/some.png'
+import {DarkModeToggleforSmall} from "../Atoms/Darkmode";
 
 function Header() {
-  const navigate = useNavigate()
-  let {userData, status: authStatus} = useSelector(({auth})=> auth)
-  const searchInputRef = useRef()
-  const smallSearchInputRef = useRef()
+  let { userData, status: authStatus } = useSelector(({ auth }) => auth);
+  const navigate = useNavigate();
+  const searchInputRef = useRef();
+  const smallSearchInputRef = useRef();
 
-
-  function handleSearchQuery(input){
-    let searchQuery = input.trim()
-    if(!searchQuery){
-      searchInputRef.current.focus()
-      return
+  function handleSearchQuery(input) {
+    let searchQuery = input.trim();
+    if (!searchQuery) {
+      searchInputRef.current.focus();
+      return;
     }
-    navigate(`/results?search_query=${searchQuery}`)
+    navigate(`/results?search_query=${searchQuery}`);
   }
 
   const username = userData?.username;
 
-  const HamburgerMenu =[
+  const HamburgerMenu = [
     {
       name: "Home",
       route: "",
@@ -41,14 +40,9 @@ function Header() {
       icon: icons.history,
     },
     {
-      name: "Subscribers",
-      route: "feed/subscribers",
-      icon: icons.Subscribers,
-    },
-    {
       name: "Playlists",
       route: `/channel/${username}/playlists`,
-      className: `${username ? "" : "hidden"}`,
+      className: `${username ? "" : "hidden"} `,
       icon: icons.folder,
     },
     {
@@ -58,6 +52,11 @@ function Header() {
       icon: icons.Admin,
     },
     {
+      name: "Subscribers",
+      route: "feed/subscribers",
+      icon: icons.Subscribers,
+    },
+    {
       name: "Support",
       route: "support",
       icon: icons.support,
@@ -65,10 +64,10 @@ function Header() {
     {
       name: "Settings",
       route: "settings",
-      className: `${username ? "" : "hidden"}`,
+      className: `${username ? "" : "hidden"} `,
       icon: icons.Settings,
     },
-  ]
+  ];
 
   return (
     <header className="sticky inset-x-0 top-0 z-50 w-full border-b dark:border-white border-red-300  dark:bg-[#121212] bg-white  px-4">
@@ -172,12 +171,31 @@ function Header() {
                 <img src={some} alt="" />
               </Link>
             </span>
-            {/* 😊dark mode componenet */}
-            <div className="">
-              <DarkModeToggleForSmall />
-            </div>
+{/* 😊dark mode componenet */}
+               <div className="">
+            <DarkModeToggleforSmall />
+               </div>
 
-            {/* dark:text-[#ae7aff]   dark:sm:bg-[#ae7aff] dark:sm:text-black  */}
+               {/* closebutonn */}
+            {/* <button className="inline-block w-8">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </button> */}
+
+ {/* dark:text-[#ae7aff]   dark:sm:bg-[#ae7aff] dark:sm:text-black  */}
+
 
           </div>
           <ul className="my-4 flex w-full flex-wrap gap-2 px-4 sm:hidden">
@@ -247,4 +265,4 @@ function Header() {
   );
 }
 
-export default Header
+export default Header;

@@ -1,37 +1,37 @@
-import React, {useRef, useState, useEffect} from 'react'
-import {EmptyPlaylist, MyChannelEmptyPlaylist, PlaylistForm} from "../index"
-import { useDispatch, useSelector } from 'react-redux'
-import {getUserPlaylists} from "../../app/Slices/playlistSlice"
-import { formatTimeStamp } from '../../helpers/formatFigures'
-import { Link, useParams } from 'react-router-dom'
-import { icons } from '../../assets/icons'
+import React, { useRef, useState } from "react";
+import { EmptyPlaylist, MyChannelEmptyPlaylist, PlaylistForm } from "../index";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getUserPlaylists } from "../../app/Slices/playlistSlice";
+import { formatTimestamp } from "../../helpers/formatFigures";
+import { Link, useParams } from "react-router-dom";
+import { icons } from "../../assets/icons";
 
+function ChannelPlaylist({ owner = false }) {
+  const dispatch = useDispatch();
+  const [playlists, setPlaylists] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const dialog = useRef();
+  let { username } = useParams();
+  let userId = useSelector((state) => state.user?.userData?._id);
+  let currentUser = useSelector((state) => state.auth.userData);
 
-function ChannelPlaylist({owner = false}) {
-  const dispatch = useDispatch()
-  const dialog = useRef()
-  const [playlists, setPlaylist] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  let { username } = useParams()
-  let userId = useSelector((state)=> state.user?.userData?._id)
-  let currentUser = useSelector((state)=> state.auth.userData);
-
-  useEffect(()=>{
-    if(owner){
-      userId = currentUser
+  useEffect(() => {
+    if (owner) {
+      userId = currentUser?._id;
     }
-    if(!userId) return
-    dispatch(getUserPlaylists(userId))
-    .then((res)=> {
-      setIsLoading(false)
-      setPlaylist(res.payload)
-    })
-  },[username, userId])
+    if (!userId) return;
+    dispatch(getUserPlaylists(userId)).then((res) => {
+      setIsLoading(false);
+      setPlaylists(res.payload);
+    });
+  }, [username, userId]);
 
-  function popupPlaylistForm(){
-    dialog.current.open()
+  function popupPlaylistForm() {
+    dialog.current.open();
   }
-  if (isLoading) { // skeleton loading
+
+  if (isLoading) {
     return (
       <div className={`grid gap-4 pt-2 mt-3 sm:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))]`}>
         <div className="w-full">
@@ -104,7 +104,7 @@ function ChannelPlaylist({owner = false}) {
   return (
     <>
       <PlaylistForm ref={dialog} />
-      {playlists?.length > 0? (
+      {playlists?.length > 0 ? (
         <>
           {/* create new playlist */}
           {owner && playlists?.length > 0 && (
@@ -153,7 +153,7 @@ function ChannelPlaylist({owner = false}) {
                                 </p>
                                 <p className="text-sm text-gray-200">
                                   {playlist.totalViews} view{playlist.totalViews > 1 ? "s" : ""} ·{" "}
-                                  {formatTimeStamp(playlist.createdAt)}
+                                  {formatTimestamp(playlist.createdAt)}
                                 </p>
                               </div>
                             </div>
@@ -175,10 +175,9 @@ function ChannelPlaylist({owner = false}) {
         <MyChannelEmptyPlaylist onClickBtn={popupPlaylistForm} />
       ) : (
         <EmptyPlaylist />
-      )
-    }     
+      )}
     </>
-  )
+  );
 }
 
-export default ChannelPlaylist
+export default ChannelPlaylist;

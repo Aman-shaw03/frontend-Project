@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeCurrentPassword as changePWD } from "../../app/Slices/authSlice";
+import { changePassword as changePWD } from "../../app/Slices/authSlice";
 import { toast } from "react-toastify";
 
 function ChangePassword() {

@@ -1,87 +1,88 @@
-import React,{useRef, useState, useEffect} from 'react'
-import {useDispatch , useSelector} from "react-redux"
-import {Link} from "react-router-dom"
-import {channelProfile} from "../../app/Slices/userSlice"
-import {toggleSubscription} from "../../app/Slices/subscriptionSlice"
-import {formatSubscription} from "../../helpers/formatFigures"
-import {LoginPopup} from ".."
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { channelProfile } from "../../app/Slices/userSlice";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { formatSubscription } from "../../helpers/formatFigures";
+import { toggleSubscription } from "../../app/Slices/subscriptionSlice";
+import { LoginPopup } from "..";
 
-function UserProfile({userId}) {
-    const dispatch = useDispatch()
-    const [localData, setLocalData] = useState(null)
-    const loginPopupDialog = useRef()
+function UserProfile({ userId }) {
+  const loginPopupDialog = useRef();
+  const dispatch = useDispatch();
 
-    const {status: authStatus} = useSelector(({auth})=>auth)
-    const {userData, loading} = useSelector((state)=>state.user)
+  const { userData, loading } = useSelector((state) => state.user);
+  const { status: authStatus } = useSelector(({ auth }) => auth);
 
-    useEffect(()=>{
-        if(!userId) return
-        dispatch(
-            channelProfile(userId)
-            .then((res)=> setLocalData(res.payload) ) 
-        )
-    },[dispatch, userId])
+  const [localData, setLocalData] = useState(null);
 
-    async function handleToggleSubscription(channelId) {
-        if(!authStatus) return loginPopupDialog.current?.open()
-        setLocalData((pre)=>( { ...pre , isSubscribe: !pre.isSubscribe} ))
-        dispatch(toggleSubscription(channelId))
-        .then(()=> dispatch(channelProfile(userId)))
-    }
+  useEffect(() => {
+    if (!userId) return;
+    dispatch(channelProfile(userId)).then((res) => setLocalData(res.payload));
+  }, [userId, dispatch]);
 
-    if((!localData && loading) || !userId) 
-        return (
-        <div className="mt-4 flex items-center justify-between">
-          {/* Owner Data */}
-            <div key="owner-data" className="flex items-center gap-x-4">
-                <div className="mt-2 h-12 w-12 shrink-0">
-                    <div className="h-full w-full rounded-full bg-slate-100/10 animate-pulse"></div>
-                </div>
-                <div className="block mt-2">
-                <p className="text-transparent sm:w-52 h-5 mb-1 bg-slate-100/10 rounded animate-pulse"></p>
-                <p className="text-sm text-transparent w-32 h-5 bg-slate-100/10 rounded animate-pulse"></p>
-                </div>
-            </div>
-            <div key="subscribe-btn" className="block">
-            <div
-                className={`group/btn mr-1 flex w-full items-center gap-x-2 px-3 py-2 text-center font-bold text-transparent bg-slate-100/10 rounded animate-pulse sm:w-auto`}
-            >
-                <span className="inline-block w-16 sm:w-32 h-8"></span>
-            </div>
-            </div>
+  async function handleToggleSubscription(channelId) {
+    if (!authStatus) return loginPopupDialog.current?.open();
+    setLocalData((pre) => ({ ...pre, isSubscribed: !pre.isSubscribed }));
+    dispatch(toggleSubscription(channelId)).then(() => dispatch(channelProfile(userId)));
+  }
+
+  if ((!localData && loading) || !userId)
+    return (
+      <div className="mt-4 flex items-center justify-between">
+        {/* Owner Data */}
+        <div key="owner-data" className="flex items-center gap-x-4">
+          <div className="mt-2 h-12 w-12 shrink-0">
+            <div className="h-full w-full rounded-full bg-slate-100/10 animate-pulse"></div>
+          </div>
+          <div className="block mt-2">
+            <p className="text-transparent sm:w-52 h-5 mb-1 bg-slate-100/10 rounded animate-pulse"></p>
+            <p className="text-sm text-transparent w-32 h-5 bg-slate-100/10 rounded animate-pulse"></p>
+          </div>
         </div>
-      ); // this is like a loading screen css with frame and name place
+        <div key="subscribe-btn" className="block">
+          <div
+            className={`group/btn mr-1 flex w-full items-center gap-x-2 px-3 py-2 text-center font-bold text-transparent bg-slate-100/10 rounded animate-pulse sm:w-auto`}
+          >
+            <span className="inline-block w-16 sm:w-32 h-8"></span>
+          </div>
+        </div>
+      </div>
+    );
 
-    let profileData = userData || localData
+  let profileData = userData || localData;
 
-    if(!profileData) 
-    return(
-        <div className="flex w-full h-screen flex-col gap-y-4 px-16 py-4 rounded bg-slate-100/10 animate-pulse"></div>
+  // Something went wrong Profile...
+  if (!profileData)
+    return (
+      <div className="flex w-full h-screen flex-col gap-y-4 px-16 py-4 rounded bg-slate-100/10 animate-pulse"></div>
+    );
 
-    )
-     return (
-        <div className="mt-4 flex items-center justify-between" >
-            <LoginPopup ref={loginPopupDialog}  message="Sign in to Subscribe..." />
-            <div key="owner-data" className="flex items-center gap-x-4">
-                <div className="mt-2 h-12 w-12 shrink-0">
-                    <Link to={`/user/${profileData?.username}`}>
-                    <img
-                        src={profileData?.avatar}
-                        alt="reactpatterns"
-                        className="h-full w-full rounded-full"
-                    />
-                    </Link>
-                </div>
-                <div className="block">
-                    <p className="dark:text-gray-200 text-black dark:hover:text-gray-300 hover:text-[#333]">
-                        <Link to={`/user/${profileData?.username}`}>{profileData?.fullName}</Link>
-                    </p>
-                    <p className="text-sm dark:text-gray-400 text-[#333]">
-                        {formatSubscription(profileData?.subscribersCount)}
-                    </p>
-                </div>
-            </div>
-            <div
+  return (
+    <div className="mt-4 flex items-center justify-between">
+      <LoginPopup ref={loginPopupDialog} message="Sign in to Subscribe..." />
+      {/* Owner Data */}
+      <div key="owner-data" className="flex items-center gap-x-4">
+        <div className="mt-2 h-12 w-12 shrink-0">
+          <Link to={`/user/${profileData?.username}`}>
+            <img
+              src={profileData?.avatar}
+              alt="reactpatterns"
+              className="h-full w-full rounded-full"
+            />
+          </Link>
+        </div>
+        <div className="block">
+          <p className="dark:text-gray-200 text-black dark:hover:text-gray-300 hover:text-[#333]">
+            <Link to={`/user/${profileData?.username}`}>{profileData?.fullName}</Link>
+          </p>
+          <p className="text-sm dark:text-gray-400 text-[#333]">
+            {formatSubscription(profileData?.subscribersCount)}
+          </p>
+        </div>
+      </div>
+      {/* Subscribe Button */}
+      <div
         key="subscribe-btn"
         onClick={() => handleToggleSubscription(profileData?._id)}
         className="block"
@@ -127,9 +128,8 @@ function UserProfile({userId}) {
           <span className={`${profileData?.isSubscribed ? "block " : "hidden "}`}>Subscribed</span>
         </button>
       </div>
-        </div>
-    )
-
+    </div>
+  );
 }
 
-export default UserProfile
+export default UserProfile;

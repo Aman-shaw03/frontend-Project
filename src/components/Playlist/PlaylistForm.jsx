@@ -1,46 +1,48 @@
-import React, {useEffect, useRef, useState, useImperativeHandle} from 'react'
-import { createPortal } from 'react-dom'
-import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
-import {createPlaylist, updatePlaylist} from "../../app/Slices/playlistSlice"
-import { icons } from '../../assets/icons'
+import React, { useEffect, useState } from "react";
+import { useImperativeHandle, useRef } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { createPlaylist, updatePlaylist } from "../../app/Slices/playlistSlice";
+import { icons } from "../../assets/icons";
 
-function PlaylistForm({playlist}, ref) {
-  const [showPopup, setShowPopup] = useState(false)
-  const dialog = useRef()
-  const dispatch = useDispatch()
+function PlaylistForm({ playlist }, ref) {
+  const dialog = useRef();
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
-    formState: {errors}
+    formState: { errors },
   } = useForm({
-    defaultValues:{
+    defaultValues: {
       name: playlist?.name || "",
-      decsription: playlist?.description || ""
-    }
-  })
+      description: playlist?.description || "",
+    },
+  });
+  const [showPopup, setShowPopup] = useState(false);
 
-  useImperativeHandle(ref,()=> {
+  useImperativeHandle(ref, () => {
     return {
-      open(){
-        setShowPopup(true)
+      open() {
+        setShowPopup(true);
       },
-      close(){
-        dialog.current.close()
-      }
-    }
-  })
+      close() {
+        dialog.current.close();
+      },
+    };
+  });
 
-  useEffect(()=>{
-    if(showPopup){
-      dialog.current.showModal()
+  useEffect(() => {
+    if (showPopup) {
+      dialog.current.showModal();
     }
-  },[showPopup])
+  }, [showPopup]);
 
-  const handleClose = ()=> {
-    dialog.current.close()
-    setShowPopup(false)
-  }
+  const handleClose = () => {
+    dialog.current.close();
+    setShowPopup(false);
+  };
 
   function handleUpdatePlaylist(data) {
     if (playlist) {
@@ -149,4 +151,4 @@ function PlaylistForm({playlist}, ref) {
   );
 }
 
-export default PlaylistForm
+export default React.forwardRef(PlaylistForm);

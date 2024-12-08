@@ -1,15 +1,15 @@
-import './index.css'
-import App from './App.jsx'
-import React from 'react'
-import ReactDOM from "react-dom/client"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
-  createRoutesFromElements
-} from "react-router-dom"
-import { Provider } from 'react-redux'
-import {store} from "./app/store.js"
+  createRoutesFromElements,
+} from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./app/store.js";
 import {
   ChannelPlaylist,
   ChannelSubscribed,
@@ -19,6 +19,7 @@ import {
   Home,
   Login,
   SignUp,
+  VideoDetail,
   PlaylistVideos,
   AuthLayout,
   AboutChannel,
@@ -29,160 +30,165 @@ import {
   GuestMyChannel,
   GuestSubscribers,
   GuestTweets,
-  PageNotFound
-} from "./components/index.js"
+  PageNotFound,
+} from "./components/index.js";
 
-import FeedVideos from "./pages/FeedVideos.jsx"
-import Channel from "./pages/Channel.jsx"
-import VideoDetail from './pages/VideoDetails.jsx'
-import History from "./pages/History.jsx"
-import Settings from "./pages/Settings.jsx" 
-import Dashboard from "./pages/Dashboard.jsx" 
-import FeedTweets from "./pages/FeedTweets.jsx" 
-import Support from "./pages/Support.jsx" 
-import SearchResult from "./pages/SearchResult.jsx" 
-import LikedVideos from "./pages/LikedVideos.jsx" 
+import FeedVideos from "./pages/FeedVideos.jsx";
+import Channel from "./pages/Channel.jsx";
+import History from "./pages/History.jsx";
+import LikedVideos from "./pages/LikedVideos.jsx";
+import Settings from "./pages/Settings.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import FeedTweets from "./pages/FeedTweets.jsx";
+import Support from "./pages/Support.jsx";
+import SearchResult from "./pages/SearchResult.jsx";
 
- const router = createBrowserRouter(
+
+
+
+
+
+const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App />}> // login , signup , page notfound , Home 
-      <Route path='' element={<Home />} > //video watching , admin dashboard, feed
-        <Route path='' element={<Feed />}> //home page videos, home page tweets , playlist , other channels , own channels(playlist , tweets , about, subscribed , videos), search results , Feed history , feed liked videos, feed subscribers , settings , support   
-
+    <Route path="/" element={<App />}>
+      <Route path="" element={<Home />}>
+        <Route path="" element={<Feed />}>
           {/* Home Page Feed Videos */}
-          <Route path='' element={<FeedVideos />} />
+          <Route path="" element={<FeedVideos />} />
 
-          {/* Home page Feed tweets */}
-          <Route 
-           path='tweets'
-           element={
-            <AuthLayout authentication guestComponent={<GuestTweets />}>
-              <FeedTweets/>
-            </AuthLayout>
-           } 
+
+
+          {/* Home Page Feed Tweets */}
+          <Route
+            path="tweets"
+            element={
+              <AuthLayout authentication guestComponent={<GuestTweets />}>
+                <FeedTweets />
+              </AuthLayout>
+            }
           />
 
           {/* Playlists */}
-          <Route path='playlist/:playlistId' element={<PlaylistVideos />} />
+          <Route path="playlist/:playlistId" element={<PlaylistVideos />} />
 
-
-          {/* All other channels */}
-          <Route path='user/:username' element={<Channel />} >
-
-           <Route path='' element={<ChannelVideos owner={false} />}/>
-           <Route path='playlists' element={<ChannelPlaylist owner={false} />}/>
-           <Route path='tweets' element={<ChannelTweets owner={false} />}/>
-           <Route path='subscribed' element={<ChannelSubscribed owner={false} />}/>
-           <Route path='about' element={<AboutChannel owner={false} />}/>
-
+          {/* All Other Channels */}
+          <Route path="user/:username" element={<Channel />}>
+            <Route path="" element={<ChannelVideos owner={false} />} />
+            <Route path="playlists" element={<ChannelPlaylist owner={false} />} />
+            <Route path="tweets" element={<ChannelTweets />} owner={false} />
+            <Route path="subscribed" element={<ChannelSubscribed owner={false} />} />
+            <Route path="about" element={<AboutChannel owner={false} />} />
           </Route>
 
           {/* Owning My Channel(currently Logged in user) */}
-          <Route 
-           path='channel/:username'
-           element={
-            <AuthLayout authentication guestComponent={<GuestMyChannel />}>
-              <Channel owner />
-            </AuthLayout>
-            } 
-           >
-            <Route path='' element={<ChannelVideos owner />} />
-            <Route path='tweets' element={<ChannelTweets owner />} />
-            <Route path='playlists' element={<ChannelPlaylist owner/>} />
-            <Route path='subscribed' element={<ChannelSubscribed owner/>} />
-            <Route path='about' element={<AboutChannel owner/>} />
-
+          <Route
+            path="channel/:username"
+            element={
+              <AuthLayout authentication guestComponent={<GuestMyChannel />}>
+                <Channel owner />
+              </AuthLayout>
+            }
+          >
+            <Route path="" element={<ChannelVideos owner />} />
+            <Route path="tweets" element={<ChannelTweets owner />} />
+            <Route path="playlists" element={<ChannelPlaylist owner />} />
+            <Route path="subscribed" element={<ChannelSubscribed owner />} />
+            <Route path="about" element={<AboutChannel owner />} />
           </Route>
 
           {/* Search Results */}
-          <Route path='/results' element={<SearchResult />} />
+          <Route path="/results" element={<SearchResult />} />
 
-          {/* User feeds */}
-          <Route 
-           path='feed/history'
-           element={
-            <AuthLayout authentication guestComponent={<GuestHistory />} >
-              <History />
-            </AuthLayout>
-           } 
+          {/* User Feeds */}
+          <Route
+            path="feed/history"
+            element={
+              <AuthLayout authentication guestComponent={<GuestHistory />}>
+                <History />
+              </AuthLayout>
+            }
           />
 
           {/* Liked Videos */}
-          <Route 
-           path='feed/liked'
-           element={
-            <AuthLayout authentication guestComponent={<GuestLikedVideos/>}>
-              <LikedVideos />
-            </AuthLayout>
-           } 
+          <Route
+            path="feed/liked"
+            element={
+              <AuthLayout authentication guestComponent={<GuestLikedVideos />}>
+                <LikedVideos />
+              </AuthLayout>
+            }
           />
 
-          {/* Subscribers */}
-          <Route 
-           path='feed/subscribers'
-           element={
-            <AuthLayout authentication guestComponent={<GuestSubscribers/>}>
-              <ChannelSubscribed owner isSubscribers />
-            </AuthLayout>
-            } 
+          {/* <Subscribers /> */}
+          <Route
+            path="feed/subscribers"
+            element={
+              <AuthLayout authentication guestComponent={<GuestSubscribers />}>
+                <ChannelSubscribed owner isSubscribers />
+              </AuthLayout>
+            }
           />
 
           {/* Settings */}
           <Route
-           path='settings'
-           element={
-            <AuthLayout authentication>
-              <Settings/>
-            </AuthLayout>
-           } 
+            path="settings"
+            element={
+              <AuthLayout authentication>
+                <Settings />
+              </AuthLayout>
+            }
           />
 
           {/* Support */}
-          <Route path='support' element={<Support/>} />
+          <Route path="support" element={<Support />} />
         </Route>
 
-        {/* Video watching */}
-        <Route path='/watch/:videoId' element={<VideoDetail />} />
+        {/* Video Watching */}
+        <Route path="/watch/:videoId" element={<VideoDetail />} />
 
-        {/* Admin dashboard */}
+        {/* Admin Dashboard */}
         <Route
-         path='/admin/dashboard'
-         element={
-          <AuthLayout authentication guestComponent={<GuestAdmin />}>
-            <Dashboard />
-          </AuthLayout>
-         } 
+          path="/admin/dashboard"
+          element={
+            <AuthLayout authentication guestComponent={<GuestAdmin />}>
+              <Dashboard />
+            </AuthLayout>
+          }
         />
       </Route>
 
-      {/*Login */}
-      <Route 
-       path='/login'
-       element={
-        <AuthLayout authentication={false}>
-          <Login />
-        </AuthLayout>
-       }  
+      {/* Login  */}
+      <Route
+        path="/login"
+        element={
+          <AuthLayout authentication={false}>
+            <Login />
+          </AuthLayout>
+        }
       />
-      
+
       {/* Sign up */}
-      <Route 
-       path='/signup'
-       element={
-        <AuthLayout authentication={false}>
-          <SignUp />
-        </AuthLayout>
-       }   
+      <Route
+        path="/signup"
+        element={
+          <AuthLayout authentication={false}>
+            <SignUp />
+          </AuthLayout>
+        }
       />
 
       {/* 404 */}
-      <Route path='*' element={<PageNotFound />} />
+      <Route path="*" element={<PageNotFound />} />
     </Route>
-  )
- );
 
- ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>
- );
+
+  )
+);
+
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+);

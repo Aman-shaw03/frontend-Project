@@ -1,14 +1,13 @@
-import axios from "axios"
+import axios from "axios";
+// import { loadProgressBar } from "axios-progress-bar";
+// import "axios-progress-bar/dist/nprogress.css";
 
-
-const baseURL = "http://localhost:8000/api/v1";
+// const baseURL = "https://playtubebyyashpz.onrender.com/api/v1";
+const baseURL = "http://localhost:9000/api/v1";
 
 export const axiosInstance = axios.create({
-    baseURL,
-    withCredentials: true
-})
+  baseURL,
+  withCredentials: true,
+});
 
-// made a general instance of axios , so it can be used in different times with get post and endpoint
-// i have set the base URL port as 8000 as its in BE , No risk
-
-// console.log(Date.now())
+// loadProgressBar({}, axiosInstance);

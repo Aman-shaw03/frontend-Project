@@ -1,40 +1,38 @@
-import React, {useState, useEffect} from 'react'
-import { 
-  EmptySubscription, 
-  MyChannelEmptySubscribed, 
-  SubscriptionUser, 
-} from "../index"
-import { useDispatch, useSelector } from 'react-redux'
-import { getChannelSubscribers, getSubscribedChannels } from '../../app/Slices/subscriptionSlice'
-import { useParams } from 'react-router-dom'
+import React, { useState } from "react";
+import {
+  EmptySubscription,
+  MyChannelEmptySubscribed,
+  SubscriptionUser,
+  UserProfile,
+} from "../index";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getChannelSubscribers, getSubscribedChannels } from "../../app/Slices/subscriptionSlice";
+import { Link, useParams } from "react-router-dom";
+import { formatSubscription } from "../../helpers/formatFigures";
 
+// TESTME Fix redux logic in channel
 
+function ChannelSubscribed({ owner = false, isSubscribers = false }) {
+  const dispatch = useDispatch();
+  let { username } = useParams();
+  let channelId = useSelector((state) => state.user.userData?._id);
+  let currentUser = useSelector((state) => state.auth.userData);
 
-function ChannelSubscribed({ owner = false,  isSubscribers = false}){
+  const [subscribedFiltered, setSubscribedFiltered] = useState(null);
+  let { data, loading, status } = useSelector((state) => state.subscription);
 
-  const dispatch = useDispatch()
-  let {username} = useParams()
-  let currentUser = useSelector((state)=> state.auth.userData )
-  let channelId = useSelector((state)=> state.user.userData?._id)
-  let { data, loading , status } = useSelector((state)=> state.subscription)
-
-  const [subscribedFiltered, setSubscribedFiltered ] = useState(null)
-
-  useEffect(()=> {
-    if(isSubscribers){
+  useEffect(() => {
+    if (isSubscribers) {
       console.log("isSubscribers: ", isSubscribers);
-      dispatch(getChannelSubscribers(currentUser?._id))
-      return
-      //if the channel had already subscribers , then gte my channel subscribers
+      dispatch(getChannelSubscribers(currentUser?._id));
+      return;
     }
+    if (owner) channelId = currentUser?._id;
+    if (!channelId) return;
+    dispatch(getSubscribedChannels(channelId));
+  }, [username, channelId, currentUser]);
 
-    if(owner) channelId = currentUser?._id
-    if(!channelId) return
-    dispatch(getSubscribedChannels(channelId))
-    // get subscribed channel = all the channels i have subscribe to
-  },[channelId, username, currentUser])
-
-  // i got no subscribers || (loadng from slices || cant get userData ) then render this skeleton 
   if (!isSubscribers && (loading || !channelId)) {
     return (
       <div className="flex flex-col gap-y-4 pt-1">
@@ -90,23 +88,26 @@ function ChannelSubscribed({ owner = false,  isSubscribers = false}){
     );
   }
 
-  let subscribed = subscribedFiltered || data
+  let subscribed = subscribedFiltered || data;
 
-  if((!status && !loading) || !subscribed) 
-    return(
+  if ((!status && !loading) || !subscribed)
+    return (
       <div className="flex w-full h-screen flex-col gap-y-4 px-16 py-4 rounded dark:bg-slate-100/10 bg-zinc-300 animate-pulse"></div>
-    )
+    );
 
-  function handleUserInput(input){
-    if(!input) setSubscribedFiltered(data)
+  function handleUserInput(input) {
+    if (!input) setSubscribedFiltered(data);
     else {
-      const filteredData = data.filter((user) => user.fullName.toLowerCase().includes(input.toLowerCase()))
-      setSubscribedFiltered(filteredData)
+      const filteredData = data.filter((user) =>
+        user.fullName.toLowerCase().includes(input.toLowerCase())
+      );
+      setSubscribedFiltered(filteredData);
     }
   }
 
-  return data.length > 0 ? (
+  return data?.length > 0 ? (
     <ul className={`flex w-full flex-col gap-y-4 ${isSubscribers ? "px-8 py-8 sm:px-16 sm:py-12" : "py-4"}`}>
+      {/* Search bar */}
       <div className="relative mb-2 rounded-lg dark:bg-white bg-zinc-100 py-2 pl-8 pr-3 text-black">
         <span className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400">
           <svg
@@ -132,8 +133,8 @@ function ChannelSubscribed({ owner = false,  isSubscribers = false}){
         />
       </div>
 
-      {/*SUbscribed Channels */}
-      {subscribed?.map((profile)=> (
+      {/* subscribed channels */}
+      {subscribed?.map((profile) => (
         <SubscriptionUser key={profile._id} profile={profile} />
       ))}
     </ul>
@@ -141,7 +142,7 @@ function ChannelSubscribed({ owner = false,  isSubscribers = false}){
     <MyChannelEmptySubscribed />
   ) : (
     <EmptySubscription />
-  )
+  );
 }
 
-export default ChannelSubscribed
+export default ChannelSubscribed;

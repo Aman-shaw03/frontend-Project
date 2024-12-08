@@ -1,36 +1,32 @@
-import React, {useState, useEffect, useRef} from 'react'
-import {Button, CommentLike, LikesComponent} from "../index"
-import { formatTimeStamp } from '../../helpers/formatFigures'
-import { toast } from 'react-toastify'
-import { useDispatch } from 'react-redux'
-import {deleteTweet, updateTweet, getTweet} from "../../app/Slices/tweetSlice"
-import { Link } from 'react-router-dom'
+import React, { useEffect, useRef } from "react";
+import { Button, CommentLike, LikesComponent } from "../index";
+import { useState } from "react";
+import { formatTimestamp } from "../../helpers/formatFigures";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { deleteTweet, getTweet, updateTweet } from "../../app/Slices/tweetSlice";
+import { Link } from "react-router-dom";
 
-function TweetAtom({tweet, owner, authStatus}) {
+function TweetAtom({ tweet, owner, authStatus }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [content, setContent] = useState(tweet?.content);
+  const dispatch = useDispatch();
+  const inputRef = useRef();
 
-  const dispatch = useDispatch()
-  const [isEditing , setIsEditing] = useState(false)
-  const [content, setContent] = useState(tweet?.content)
-  const inputRef = useRef()
+  useEffect(() => {
+    if (isEditing) inputRef.current.focus();
+  }, [isEditing]);
 
-  useEffect(()=> {
-    if(isEditing) inputRef.current.focus()
-  },[isEditing])
-
-  function handleCancel(){
-    setIsEditing(false)
-    setContent(tweet?.content)
+  function handleCancel() {
+    setIsEditing(false);
+    setContent(tweet.content);
   }
 
-  function handleEditing(){
-    setIsEditing(true)
+  function handleEditing() {
+    setIsEditing(true);
   }
 
-  function handleDelete(){
-    dispatch(deleteTweet({tweetId: tweet._id}))
-  }
-
-  function handleUpdate(){
+  function handleUpdate() {
     if (!content.trim()) {
       toast.warning("Please enter some message");
       return;
@@ -41,8 +37,12 @@ function TweetAtom({tweet, owner, authStatus}) {
       toast.error("Maximum 500 characters are allowed");
       return;
     }
-    dispatch(updateTweet({tweetId: tweet._id, data: {tweet: content}}))
+    dispatch(updateTweet({ tweetId: tweet._id, data: { tweet: content } }));
+    setIsEditing(false);
+  }
 
+  function handleDelete() {
+    dispatch(deleteTweet({ tweetId: tweet._id }));
   }
 
   return (
@@ -66,7 +66,7 @@ function TweetAtom({tweet, owner, authStatus}) {
             </span>
              
             <span className="inline-block text-sm text-gray-400">
-              {formatTimeStamp(tweet.createdAt)}
+              {formatTimestamp(tweet.createdAt)}
             </span>
           </h4>
           <p className="mb-2">
@@ -99,8 +99,8 @@ function TweetAtom({tweet, owner, authStatus}) {
               {/* Delete and Cancel button */}
               <Button
                 type="button"
-                onClick={()=> {
-                  isEditing ? handleCancel() : handleDelete()
+                onClick={() => {
+                  isEditing ? handleCancel() : handleDelete();
                 }}
                 className={` rounded-3xl pt-0 dark:bg-transparent bg-red-100 hover:border hover:border-b-white disabled:cursor-not-allowed dark:text-white text-sm font-semibold px-1 pb-1 mr-2 ${
                   isEditing ? "dark:hover:bg-gray-700 hover:bg-red-200  " : "hover:bg-red-400 hover:text-black "
@@ -112,8 +112,8 @@ function TweetAtom({tweet, owner, authStatus}) {
               {/* Edit & Update Button */}
               <Button
                 type="button"
-                onClick={()=> {
-                  isEditing? handleUpdate() : handleEditing()
+                onClick={() => {
+                  isEditing ? handleUpdate() : handleEditing();
                 }}
                 disabled={isEditing ? tweet.content === content || !content.trim() : false}
                 className="rounded-3xl pt-0 dark:bg-[#ae7aff] bg-red-400 disabled:bg-zinc-400 disabled:text-white disabled:cursor-not-allowed dark:hover:bg-[#b48ef1] hover:bg-red-800 hover:text-white text-sm text-black font-semibold border border-b-white px-2 pb-1"
@@ -126,8 +126,6 @@ function TweetAtom({tweet, owner, authStatus}) {
       </li>
     </>
   );
-
-
 }
 
-export default TweetAtom
+export default TweetAtom;

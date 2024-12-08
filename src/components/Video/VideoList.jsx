@@ -1,5 +1,5 @@
 import React from "react";
-import { formatTimeStamp, formatVideoDuration } from "../../helpers/formatFigures";
+import { formatTimestamp, formatVideoDuration } from "../../helpers/formatFigures";
 import { Link, useNavigate } from "react-router-dom";
 import { icons } from "../../assets/icons";
 
@@ -137,11 +137,11 @@ function VideoView({ videos = [], loading = true, fetching = false }) {
                   <div className="relative mb-2 w-full md:mb-0 md:w-5/12">
                     <div className="w-full pt-[56%]">
                       <div className="absolute inset-0">
-                        <img src={video.thumbnail} alt={video.title} className="h-full w-full" /> // thumbnail
+                        <img src={video.thumbnail} alt={video.title} className="h-full w-full" />
                       </div>
                       <span className="absolute bottom-1 right-1 inline-block rounded dark:bg-black bg-white  px-1.5 text-sm">
                         {formatVideoDuration(video.duration)}
-                      </span> // video duration
+                      </span>
                     </div>
                   </div>
                   <div className="flex gap-x-2 md:w-7/12">
@@ -152,13 +152,13 @@ function VideoView({ videos = [], loading = true, fetching = false }) {
                           alt={video.owner?.username}
                           className="h-full w-full  rounded-full"
                         />
-                      </button> // youtuber channel avatar button
+                      </button>
                     </div>
                     <div className="w-full">
                       <h6 className="mb-1 font-semibold md:max-w-[75%]">{video.title}</h6>
                       <p className="flex text-sm text-black dark:text-gray-200 sm:mt-3">
-                        {video.views} Views · {formatTimeStamp(video.createdAt)}
-                      </p> // video views
+                        {video.views} Views · {formatTimestamp(video.createdAt)}
+                      </p>
                       <div className="flex items-center gap-x-4">
                         <div className="mt-2 hidden h-10 w-10 shrink-0 md:block">
                           <img

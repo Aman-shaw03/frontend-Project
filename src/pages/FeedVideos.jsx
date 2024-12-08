@@ -1,84 +1,69 @@
-import React, {useRef, useEffect} from 'react'
-import { useDispatch, useSelector } from "react-redux"
-import {VideoGrid} from "../components/index"
-import {emptyPagingVideosData, getAllVideosByOption} from "../app/Slices/paginationSlice"
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { VideoGrid } from "../components/index";
+import { emptyPagingVideosData, getAllVideosByOption } from "../app/Slices/paginationSlice";
 
 function FeedVideos({gridClassName, itemClassName}) {
-    const dispatch = useDispatch()
-    const {loading} = useSelector(({pagingVideos})=> pagingVideos )
-    const {videos} = useSelector(({pagingVideos})=> pagingVideos.data )
-    const {pagingInfo} = useSelector(({pagingVideos})=> pagingVideos.data )
+  const dispatch = useDispatch();
 
-    /*const initialState = {
-    loading: false,
-    status: false,
-    data: {videos:[], pagingInfo:{}}
-    } */
+  const { loading } = useSelector(({ pagingVideos }) => pagingVideos);
+  const { videos } = useSelector(({ pagingVideos }) => pagingVideos.data);
+  const { pagingInfo } = useSelector(({ pagingVideos }) => pagingVideos.data);
 
-    const sectionRef = useRef()
-    const fetchedPageRef = useRef()
-    const pagingInfoRef = useRef(pagingInfo)
-    // we are initialising this ref with pagingInfo data 
+  const sectionRef = useRef();
+  const fetchedPageRef = useRef();
+  const pagingInfoRef = useRef(pagingInfo);
 
-    pagingInfoRef.current = pagingInfo
-    /* refer Frontend notes */
+  pagingInfoRef.current = pagingInfo;
 
-    useEffect(()=> {
-        fetchedPageRef.current = new Set()
-        // mutable object with unique values
+  useEffect(() => {
+    fetchedPageRef.current = new Set();
 
-        sectionRef.current = document.getElementById("scrollable_results_screen");
-        //it  holds the DOM element now
-        sectionRef.current?.scrollTo({top: 0, behavior: "smooth"})
-        // if the elements is there , then scroll it to the top smoothly
+    sectionRef.current = document.getElementById("scrollable_results_screen");
+    sectionRef.current?.scrollTo({ top: 0, behavior: "smooth" });
 
-        let fetchAllVideosPromise = dispatch(getAllVideosByOption({page: 1, limit: 15}))
-        // fetching a promise with query
+    let fetchAllVideosPromise = dispatch(getAllVideosByOption({ page: 1, limit: 15 }));
 
-        fetchAllVideosPromise.then(()=>{
-            fetchedPageRef.current.add(1)
-        })
-        
+    fetchAllVideosPromise.then(() => {
+      fetchedPageRef.current.add(1);
+    });
+    sectionRef.current?.addEventListener("scroll", handleScroll);
 
-        sectionRef.current?.addEventListener("scroll", handleScroll)
-        return(()=>{
-            sectionRef.current?.removeEventListener("scroll", handleScroll)
-            fetchedPageRef.current.clear()
-            fetchAllVideosPromise.abort()
-            dispatch(emptyPagingVideosData())
-            sectionRef.current?.scrollTo({top: 0, behavior: "smooth"})
-            //cleanup
-        })
-    },[])
+    return () => {
+      sectionRef.current?.removeEventListener("scroll", handleScroll);
+      fetchedPageRef.current.clear();
+      dispatch(emptyPagingVideosData());
+      fetchAllVideosPromise.abort();
+      sectionRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    };
+  }, []); // [dispatch, location.pathname]
 
-    const handleScroll = ()=> {
-        const section = sectionRef.current
-        const scrollHeight = section.scrollHeight // total height of scrollable content
-        const scrolledValue = section.clientHeight + section.scrollTop // how much the user/client has scroll down
+  const handleScroll = () => {
+    const section = sectionRef.current;
+    const scrollHeight = section.scrollHeight;
+    const scrolledValue = section.clientHeight + section.scrollTop;
 
-        if(scrolledValue +5 > scrollHeight){
-            const currentPagingInfo = pagingInfoRef.current
-            if(
-                currentPagingInfo.hasNextPage && !fetchedPageRef.current?.has(currentPagingInfo.hasNextPage)
-            ){
-                fetchedPageRef.current.add(currentPagingInfo.nextPage)
-                dispatch(getAllVideosByOption({page: `${currentPagingInfo.nextPage}`, limit: 15 }))
-            }
-            // if the currentPagingInfo has this next page but the fetchedPageRef doesnt, dispatch the info
-        }
-
-
+    if (scrolledValue + 5 > scrollHeight) {
+      const currentPagingInfo = pagingInfoRef.current;
+      if (
+        currentPagingInfo.hasNextPage &&
+        !fetchedPageRef.current?.has(currentPagingInfo.nextPage)
+      ) {
+        fetchedPageRef.current.add(currentPagingInfo.nextPage);
+        dispatch(getAllVideosByOption({ page: `${currentPagingInfo.nextPage}`, limit: 15 }));
+      }
     }
+  };
 
-    return (
-        <VideoGrid
-         videos={videos}
-         loading={loading && !fetchedPageRef.current.has(1)} 
-         fetching={loading && videos?.length > 0}
-         gridClassName={gridClassName}
-         itemClassName={itemClassName} 
-        />
-    )
+  return (
+    <VideoGrid
+      videos={videos}
+      loading={loading && !fetchedPageRef.current.has(1)}
+      fetching={loading && videos?.length > 0}
+      gridClassName={gridClassName}
+      itemClassName={itemClassName}
+    />
+  );
 }
 
-export default FeedVideos
+export default FeedVideos;

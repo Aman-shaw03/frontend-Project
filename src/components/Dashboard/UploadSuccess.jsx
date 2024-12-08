@@ -1,31 +1,47 @@
-import React, { useRef, useImperativeHandle } from "react";
+import React, { useRef, useImperativeHandle, useState } from "react";
 import { createPortal } from "react-dom";
+import ConfirmPopup from "../Atoms/ConfirmPopup";
+import { icons } from "../../assets/icons";
 
-function UploadSuccess({ video, updating = false }, ref) {
+function UploadingVideo({ video, abort, updating = false }, ref) {
   const dialog = useRef();
+  const confirmCancelDialog = useRef();
+
+  // const [isUploading, setIsUploading] = useState(true);
 
   useImperativeHandle(ref, () => {
     return {
       open() {
         dialog.current.showModal();
       },
+      close() {
+        dialog.current.close();
+      },
     };
   });
 
+  function handleCancel(isConfirm) {
+    if (isConfirm) abort();
+  }
+  
   return createPortal(
-    <dialog ref={dialog} className="h-full dark:text-white text-black backdrop:backdrop-blur-sm">
+    <dialog
+      ref={dialog}
+      onClose={() => confirmCancelDialog.current?.close()}
+      className="h-full dark:text-white text-black backdrop:backdrop-blur-sm"
+    >
       <div className="relative flex min-h-[calc(100vh-66px)] sm:min-h-[calc(100vh-82px)]">
-        <div className="fixed inset-0 top-[calc(66px)] z-10 flex flex-colbg-black/50 px-4 pb-[86px] pt-4 sm:top-[calc(82px)] sm:px-14 sm:py-8">
-          <div className=" inset-x-0 top-0 z-10 flex h-[calc(100vh-66px)] items-center justify-center dark:bg-black/50 bg-white/50 px-4 pb-[86px] pt-4 sm:h-[calc(100vh-82px)] sm:px-14 sm:py-8">
+        <div className="fixed inset-0 top-[calc(66px)] z-10 flex flex-col bg-black/50 px-4 pb-[86px] pt-4 sm:top-[calc(82px)] sm:px-14 sm:py-8">
+          <div className="absolute inset-x-0 top-0 z-10 flex h-[calc(100vh-66px)] items-center justify-center bg-black/50 px-4 pb-[86px] pt-4 sm:h-[calc(100vh-82px)] sm:px-14 sm:py-8">
             <div className="w-full max-w-lg overflow-auto rounded-lg border border-gray-700 dark:bg-[#121212] bg-white p-4">
               <div className="mb-4 flex items-start justify-between">
                 <h2 className="text-xl font-semibold">
-                  Video {updating ? "Updated" : "Uploaded"} Successfully...
-                  <span className="block text-sm text-gray-300">
+                  {updating ? "Updating" : "Uploading"} Video...
+                  <span className="block text-sm text-zinc-500 dark:text-gray-300">
                     Track your video {updating ? "Updating" : "Uploading"} process.
                   </span>
                 </h2>
-                <button onClick={() => dialog.current.close()} className="h-6  w-6">
+                <button onClick={() => dialog.current?.close()} className="h-6 w-6">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -64,7 +80,7 @@ function UploadSuccess({ video, updating = false }, ref) {
                 <div className="flex flex-col">
                   <h6>
                     {updating
-                      ? "Updated " + video.title
+                      ? "Updating " + video.title
                       : video?.videoFile?.length > 0 && video?.videoFile[0].name}
                   </h6>
                   {!updating && (
@@ -74,36 +90,30 @@ function UploadSuccess({ video, updating = false }, ref) {
                       MB
                     </p>
                   )}
-                  <div className="mt-2 flex items-center">
-                    <span className="mr-2 inline-block w-6 text-[#ae7aff]">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </span>
-                    Video {updating ? "Updated" : "Uploaded"}
+                  <div className="mt-2   ">
+                    {icons.loading}
+                    {updating ? "Updating" : "Uploading"}...
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <button onClick={() => dialog.current?.close()} className="border rounded px-4 py-3">
-                  Close
-                </button>
-                <button
-                  onClick={() => dialog.current?.close()}
-                  className= "rounded dark:bg-[#ae7aff] bg-green-500 text-white px-4 py-3 dark:text-black disabled:bg-[#E4D3FF]"
-                >
-                  Finish
-                </button>
-              </div>
+              {!updating && (
+                <div className="grid grid-cols-2 gap-4">
+                  <button onClick={() => dialog.current.close()} className="border px-4 py-3">
+                    Close
+                  </button>
+                  <ConfirmPopup
+                    ref={confirmCancelDialog}
+                    actionFunction={handleCancel}
+                    title="Are you sure to cancel the Upload?"
+                  />
+                  <button
+                    onClick={() => confirmCancelDialog.current.open()}
+                    className="dark:bg-[#ae7aff] bg-red-500 rounded px-4 py-3 dark:text-black text-white dark:disabled:bg-[#E4D3FF] disabled:bg-[#f1d5c8]"
+                  >
+                    Cancel Upload
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -113,4 +123,4 @@ function UploadSuccess({ video, updating = false }, ref) {
   );
 }
 
-export default React.forwardRef(UploadSuccess);
+export default React.forwardRef(UploadingVideo);

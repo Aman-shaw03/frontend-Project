@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { deletePlaylist, getPlaylistById } from "../../app/Slices/playlistSlice";
-import { formatTimeStamp } from "../../helpers/formatFigures";
+import { formatTimestamp } from "../../helpers/formatFigures";
 import { PlaylistForm, EmptyPlaylist, ConfirmPopup } from "../index";
 import PlaylistVideoAtom from "./PlaylistVideoAtom";
 import { icons } from "../../assets/icons";
@@ -185,7 +185,7 @@ function PlaylistVideos() {
                     </p>
                     <p className="text-sm dark:text-gray-200 text-black">
                       {playList.totalViews} view{playList.totalViews > 1 ? "s" : ""} ·{" "}
-                      {formatTimeStamp(playList.createdAt)}
+                      {formatTimestamp(playList.createdAt)}
                     </p>
                   </div>
                 </div>

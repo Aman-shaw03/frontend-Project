@@ -1,35 +1,38 @@
-import React, {useState, useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {EmptyTweet, MyChannelEmptyTweet, TweetAtom} from "../index"
-import {getTweet, createTweet} from "../../app/Slices/tweetSlice"
-import { formatTimeStamp } from '../../helpers/formatFigures'
-import { useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
+import React, { useRef, useState } from "react";
+import EmptyTweet from "./EmptyTweet";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getTweet, createTweet } from "../../app/Slices/tweetSlice";
+import { formatTimestamp } from "../../helpers/formatFigures";
+import { LikesComponent, LoginPopup, MyChannelEmptyTweet, TweetAtom } from "../index";
+import { useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
-function ChannelTweets({owner = false}) {
+// OPTIMIZEME: Optimize this tweets
 
-  const dispatch = useDispatch()
-  let {username} = useParams()
-  const {register, handleSubmit, setFocus, reset} = useForm()
-  const [localTweets, setLocalTweets] = useState(null)
+function ChannelTweets({ owner = false }) {
+  const dispatch = useDispatch();
+  let { username } = useParams();
 
-  let userId = useSelector(({user})=> user.userData?._id )
-  const {status: authStatus, userData: currentUser} = useSelector(({auth})=> auth)
-  const {data, status} = useSelector(({tweet})=> tweet)
+  const { data, status } = useSelector(({ tweet }) => tweet);
+  let userId = useSelector(({ user }) => user.userData?._id);
+  const { status: authStatus, userData: currentUser } = useSelector(({ auth }) => auth);
 
-  useEffect(()=> {
-    if(owner){
-      userId = currentUser?._id
+  const [localTweets, setLocalTweets] = useState(null);
+  const { register, handleSubmit, reset, setFocus } = useForm();
+
+  useEffect(() => {
+    if (owner) {
+      userId = currentUser?._id;
     }
+    if (!userId) return;
+    dispatch(getTweet(userId)).then((res) => {
+      if (res.meta.requestStatus == "fulfilled") setLocalTweets(res.payload);
+    });
+  }, [username, userId, authStatus]);
 
-    if(!userId) return
-    dispatch(getTweet(userId)).then((res)=> {
-      if(res.meta.requestStatus == "fullfilled") setLocalTweets(res.payload)
-    })
-  },[username, userId,authStatus ])
-
-  function addTweet(data){
+  function addTweet(data) {
     if (!data.tweet.trim()) {
       toast.error("Content is required");
       setFocus("tweet");
@@ -43,13 +46,12 @@ function ChannelTweets({owner = false}) {
       setFocus("tweet");
       return;
     }
-    dispatch(createTweet({data})).then(()=>{
-      getTweet(currentUser?._id)
-      reset()
-    })
+    dispatch(createTweet({ data })).then(() => {
+      getTweet(currentUser?._id);
+      reset();
+    });
   }
 
-  //skeleton loading
   if (!localTweets) {
     return (
       <section className="w-full py-1 px-3 pb-[70px] sm:ml-[70px] sm:pb-0 lg:ml-0">
@@ -251,6 +253,7 @@ function ChannelTweets({owner = false}) {
 
   let tweets = data || localTweets;
 
+  // TODO: Check all something went wrong
   if (!status && !tweets) {
     return (
       <div className="flex w-full h-screen flex-col gap-y-4 px-16 py-4 rounded dark:bg-slate-100/10 bg-zinc-300 animate-pulse"></div>
@@ -260,17 +263,14 @@ function ChannelTweets({owner = false}) {
   return (
     <>
       {owner && (
-        <form 
-        onSubmit={handleSubmit(addTweet)}
-        className="mt-2 border pb-2" >
-          <textarea 
-            className="mb-2 h-10 w-full resize-none border-none bg-transparent px-3 pt-2 outline-none" 
-            {...register("tweet")} 
-            placeholder='write a tweet' >
-          </textarea>
+        <form onSubmit={handleSubmit(addTweet)} className="mt-2 border pb-2">
+          <textarea
+            {...register("tweet")}
+            className="mb-2 h-10 w-full resize-none border-none bg-transparent px-3 pt-2 outline-none"
+            placeholder="Write a tweet"
+          ></textarea>
 
           <div className="flex items-center justify-end gap-x-3 px-3">
-
             {/* Emoji button */}
             <button type="button" className="inline-block h-5 w-5 hover:text-[#ae7aff]">
               <svg
@@ -301,26 +301,22 @@ function ChannelTweets({owner = false}) {
               Send
             </button>
           </div>
-
         </form>
       )}
-
-      {tweets?.length> 0? (
+      {tweets?.length > 0 ? (
         <ul className="py-4">
-          {tweets.map((tweet)=> (
-            <TweetAtom key={tweet._id} tweet={tweet} owner={tweet} />
+          {tweets.map((tweet) => (
+            <TweetAtom key={tweet._id} tweet={tweet} owner={owner} />
           ))}
         </ul>
       ) : owner ? (
-        <MyChannelEmptyTweet/>
-      ) : ( 
+        <MyChannelEmptyTweet />
+      ) : (
         <EmptyTweet />
       )}
     </>
-  )
-
-
-
+  );
 }
 
-export default ChannelTweets
+export default ChannelTweets;
+

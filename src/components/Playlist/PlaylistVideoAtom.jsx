@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { formatTimeStamp, formatVideoDuration } from "../../helpers/formatFigures";
+import { formatTimestamp, formatVideoDuration } from "../../helpers/formatFigures";
 import { addVideoToPlaylist, removeVideoFromPlaylist } from "../../app/Slices/playlistSlice";
 import { useDispatch } from "react-redux";
 import { icons } from "../../assets/icons";
@@ -51,7 +51,7 @@ function PlaylistVideoAtom({ video, playlistId, owner = false }) {
             <h6 className="mb-1 text-lg font-semibold sm:max-w-[75%]">{video.title}</h6>
             {/* views and date */}
             <p className="flex text-sm dark:text-gray-200 text-black sm:mt-3">
-              {video.views} View{video.views > 1 ? "s" : ""} · {formatTimeStamp(video.createdAt)}
+              {video.views} View{video.views > 1 ? "s" : ""} · {formatTimestamp(video.createdAt)}
             </p>
             {/* Owner Details */}
             <div className="flex items-center gap-x-4">

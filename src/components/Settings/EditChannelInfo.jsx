@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateProfile } from "../../app/Slices/authSlice";
+import { addLink, deleteLink, updateLink, updateProfile } from "../../app/Slices/authSlice";
 
 function EditChannelInfo({ userData }) {
   const defaultValues = {
@@ -9,6 +9,21 @@ function EditChannelInfo({ userData }) {
   };
   const dispatch = useDispatch();
   const [data, setData] = useState(defaultValues);
+
+  function handleLink(event) {
+    event.preventDefault();
+    let formData = new FormData(event.target);
+    let linkId = event.target;
+    console.log("linkId: ", linkId);
+    console.log("formData: ", formData);
+
+    if (linkId) dispatch(updateLink({ linkId, formData }));
+    else dispatch(addLink({ formData }));
+  }
+  function handleDeleteLink(event) {
+    let linkId = event.target.dataset.linkId;
+    dispatch(deleteLink(linkId));
+  }
 
   const handleSaveChange = (event) => {
     event.preventDefault();
@@ -93,6 +108,7 @@ function EditChannelInfo({ userData }) {
             </button>
           </div>
         </form>
+        
       </div>
     </div>
   );

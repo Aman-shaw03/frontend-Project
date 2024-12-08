@@ -1,7 +1,9 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {toggleDarkMode} from "../../app/Slices/themeSlice"
-function DarkModeToggle() {
+
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleDarkMode } from '../../app/Slices/themeSlice';
+
+const DarkModeToggle = () => {
   const darkMode = useSelector((state) => state.darkMode);
   const dispatch = useDispatch();
 
@@ -36,9 +38,9 @@ function DarkModeToggle() {
       </button>
     </div>
   );
-}
+};
 
-const DarkModeToggleForSmall = () => {
+const DarkModeToggleforSmall = () => {
   const darkMode = useSelector((state) => state.darkMode);
   const dispatch = useDispatch();
 
@@ -75,5 +77,8 @@ const DarkModeToggleForSmall = () => {
   );
 };
 
-export {DarkModeToggleForSmall}
-export default DarkModeToggle
+export{
+  DarkModeToggleforSmall
+}
+
+export default DarkModeToggle;

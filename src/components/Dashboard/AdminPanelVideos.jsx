@@ -1,11 +1,12 @@
-import React, {useState} from 'react'
-import { AdminVideoAtom } from '../index'
+import React, { useState } from "react";
+import { AdminVideoAtom } from "../index";
 
-function AdminPanelVideos({channelVideos = null}) {
-  const [filteredVideos, setFilteredVideos] = useState(null)
+function AdminPanelVideos({ channelVideos = null }) {
+  const [filteredVideos, setFilteredVideos] = useState(null);
 
-  if(!channelVideos) 
-    return(
+  // Skeleton Effect for loading
+  if (!channelVideos) {
+    return (
       <>
         <div className="flex items-start">
           <div className="relative w-full max-w-2xl overflow-hidden">
@@ -198,52 +199,53 @@ function AdminPanelVideos({channelVideos = null}) {
         </div>
       </>
     );
+  }
 
-    function handleInputChange(input){
-      if(!input.trim()){
-        setFilteredVideos(channelVideos)
-        return
-      }
-
-      const filterd = channelVideos.filter((video)=> video.title.toLowerCase().startsWith(input.toLowerCase().trim()))
-
-      setFilteredVideos(filterd)
+  function handleInputChange(input) {
+    if (!input.trim()) {
+      setFilteredVideos(channelVideos);
+      return;
     }
+    const filtered = channelVideos.filter((video) =>
+      video.title.toLowerCase().startsWith(input.toLowerCase().trim())
+    );
+    setFilteredVideos(filtered);
+  }
 
-    let videos = filteredVideos || channelVideos
+  let videos = filteredVideos || channelVideos;
 
-    return (
-      <>
-        {/* Search Bar */}
-        <div className="flex items-start">
-          <div className="relative w-full max-w-lg  overflow-hidden">
-            <input
-             className="w-full peer rounded-r-[20px] border dark:focus:border-[#ae7aff] focus:border-[#ff9d7a] bg-transparent py-1 pl-9 pr-3 dark:placeholder-white placeholder:black outline-none sm:py-2"
-             placeholder="Search"
-             onChange={(e)=> handleInputChange(e.target.value)} />
-            
-            <span className="absolute dark:peer-focus:text-[#ae7aff] peer-focus:text-[#ff957a] left-2.5 top-1/2 inline-block -translate-y-1/2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-                className=" h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                ></path>
-              </svg>
-            </span>
-          </div>
+  return (
+    <>
+      {/* Search bar */}
+      <div className="flex items-start">
+        <div className="relative w-full max-w-lg  overflow-hidden">
+          <input
+            onChange={(e) => handleInputChange(e.target.value)}
+            className="w-full peer rounded-r-[20px] border dark:focus:border-[#ae7aff] focus:border-[#ff9d7a] bg-transparent py-1 pl-9 pr-3 dark:placeholder-white placeholder:black outline-none sm:py-2"
+            placeholder="Search"
+          />
+          <span className="absolute dark:peer-focus:text-[#ae7aff] peer-focus:text-[#ff957a] left-2.5 top-1/2 inline-block -translate-y-1/2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+              className=" h-5 w-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              ></path>
+            </svg>
+          </span>
         </div>
+      </div>
 
-        {/* Video Manipulation */}
-        <div className="w-full overflow-auto">
+      {/* Video Manipulation Table */}
+      <div className="w-full overflow-auto">
         <table className="w-full min-w-[1200px] border-collapse border text-zinc-500 dark:text-white">
           <thead>
             <tr>
@@ -258,14 +260,14 @@ function AdminPanelVideos({channelVideos = null}) {
             </tr>
           </thead>
           <tbody>
-            {videos?.map((video)=>(
-              <AdminPanelVideos key={video._id} video={video} />
+            {videos?.map((video) => (
+              <AdminVideoAtom key={video._id} video={video} />
             ))}
           </tbody>
         </table>
-      </div>  
-      </>
-    )
+      </div>
+    </>
+  );
 }
 
-export default AdminPanelVideos
+export default AdminPanelVideos;
