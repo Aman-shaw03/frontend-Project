@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Link, NavLink, useParams, Outlet} from "react-router-dom"
+import {NavLink, useParams, Outlet} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
 import { useNavigate } from 'react-router-dom'
 import {channelProfile} from "../app/Slices/userSlice"
@@ -9,8 +9,8 @@ function Channel({owner = false}) {
     const [profile, setProfile] = useState(null)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {username} = useParams()
-    const loggedInUsername = useSelector(({auth})=> auth.userData?.username )
+    const { username } = useParams()
+    const loggedInUsername = useSelector((state) => state.auth.userData?.username);
     
     useEffect(()=> {
         if(!owner && loggedInUsername === username) navigate(`/channel/${loggedInUsername}`);

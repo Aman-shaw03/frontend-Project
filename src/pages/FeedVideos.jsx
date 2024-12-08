@@ -45,7 +45,7 @@ function FeedVideos({gridClassName, itemClassName}) {
             sectionRef.current?.removeEventListener("scroll", handleScroll)
             fetchedPageRef.current.clear()
             fetchAllVideosPromise.abort()
-            dispatch(emptyPagingVideosData)
+            dispatch(emptyPagingVideosData())
             sectionRef.current?.scrollTo({top: 0, behavior: "smooth"})
             //cleanup
         })
